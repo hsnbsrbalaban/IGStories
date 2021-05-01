@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    var igStoriesArray: [IGStories] = StoryManager.shared.getStoriesArray()
+    var igStoriesArray: [IGStory] = StoryManager.shared.getStoriesArray()
     
     lazy var layout: UICollectionViewFlowLayout = {
         let ly = UICollectionViewFlowLayout()
@@ -57,6 +57,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        <#code#>
+        let vc = StoryPreviewViewController.init()
+        present(vc, animated: true, completion: nil)
     }
 }

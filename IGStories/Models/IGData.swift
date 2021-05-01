@@ -9,6 +9,9 @@ import Foundation
 
 class IGData: Codable {
     
-    var data: [IGStories]
+    var data: [IGStory]
     
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
 }
