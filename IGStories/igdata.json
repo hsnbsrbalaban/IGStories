@@ -1,0 +1,23 @@
+{
+    "data": [
+        {
+            "user": {
+                "username": "hasan",
+                "profile_picture": ""
+            },
+            "story_count": 2,
+            "stories": [
+                {
+                    "media_type": "image",
+                    "media_url": "",
+                    "last_updated": "2m",
+                },
+                {
+                    "media_type": "video",
+                    "media_url": "",
+                    "last_updated": "5m",
+                }
+            ]
+        }
+    ]
+}
