@@ -8,6 +8,10 @@
 import UIKit
 import AVKit
 
+protocol StoryPreviewCellDelegate: class {
+    func closeButtonPressed()
+}
+
 class StoryPreviewCell: UICollectionViewCell {
     //MARK: - IBOutlets
     @IBOutlet weak var mainView: UIView!
@@ -28,6 +32,9 @@ class StoryPreviewCell: UICollectionViewCell {
     private var snaps: [IGSnap] = []
     private var lastSeenSnapIndex: Int = -1
     
+    weak var delegate: StoryPreviewCellDelegate?
+    
+    //MARK: - UI
     private lazy var layout: UICollectionViewFlowLayout = {
         let ly = UICollectionViewFlowLayout()
         ly.itemSize = CGSize(width: UIScreen.main.bounds.width,
@@ -79,6 +86,7 @@ class StoryPreviewCell: UICollectionViewCell {
     
     //MARK: - IBActions
     @IBAction func closeButtonAction(_ sender: UIButton) {
+        delegate?.closeButtonPressed()
     }
     
     //MARK: - Functions

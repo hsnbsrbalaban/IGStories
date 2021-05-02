@@ -5,6 +5,7 @@
 //  Created by andres portillo on 1/7/17.
 //  Copyright © 2017 andres portillo. All rights reserved.
 //
+//https://github.com/andrespch/CubicCollectionViewLayout/blob/master/CubicCollectionViewLayout/Classes/CubicCollectionViewLayout.swift
 import UIKit
 
 class CubicCollectionViewLayoutAttributes: UICollectionViewLayoutAttributes {

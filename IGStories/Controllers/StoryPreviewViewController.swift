@@ -8,22 +8,12 @@
 import UIKit
 
 class StoryPreviewViewController: UIViewController {
-    
+    //MARK: - Variables
     var selectedIndex: Int?
     
     private var igStories: [IGStory] = StoryManager.shared.getStoriesArray()
     
-//    private lazy var layout: UICollectionViewFlowLayout = {
-//        let ly = UICollectionViewFlowLayout()
-//        ly.itemSize = CGSize(width: view.bounds.width - view.safeAreaInsets.left - view.safeAreaInsets.right,
-//                             height: (view.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom))
-//        ly.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        ly.minimumInteritemSpacing = 0
-//        ly.minimumLineSpacing = 0
-//        ly.scrollDirection = .horizontal
-//        return ly
-//    }()
-    
+    //MARK: - UI
     private lazy var cubicLayout = CubicCollectionViewLayout()
     
     private lazy var collectionView: UICollectionView = {
@@ -40,6 +30,7 @@ class StoryPreviewViewController: UIViewController {
         return cv
     }()
 
+    //MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -54,6 +45,7 @@ class StoryPreviewViewController: UIViewController {
     }
 }
 
+//MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension StoryPreviewViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return igStories.count
@@ -62,9 +54,14 @@ extension StoryPreviewViewController: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "previewcell", for: indexPath) as! StoryPreviewCell
         cell.configure(with: igStories[indexPath.row], index: selectedIndex ?? 0)
-        print(indexPath.row)
-        print(igStories[indexPath.row].id)
-        print("+++")
+        cell.tag = indexPath.row
+        cell.delegate = self
         return cell
+    }
+}
+
+extension StoryPreviewViewController: StoryPreviewCellDelegate {
+    func closeButtonPressed() {
+        dismiss(animated: true, completion: nil)
     }
 }
