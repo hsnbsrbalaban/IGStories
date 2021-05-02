@@ -105,3 +105,19 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
     
     
 }
+
+//MARK: - Cubic transition functions
+extension StoryPreviewCell {
+    override open func prepareForReuse() {
+        super.prepareForReuse()
+        layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+    }
+    
+    override open func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+        guard let cubicAttributes = layoutAttributes as? CubicCollectionViewLayoutAttributes else {
+            fatalError("LayoutAttributes of class CubicCollectionViewLayoutAttributes expected")
+        }
+        layer.anchorPoint = cubicAttributes.anchorPoint
+    }
+}
