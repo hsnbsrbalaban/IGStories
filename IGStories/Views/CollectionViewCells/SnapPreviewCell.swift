@@ -14,7 +14,6 @@ class SnapPreviewCell: UICollectionViewCell {
     private lazy var videoPlayer = AVPlayer()
     
     func configure(with snap: IGSnap) {
-        print(snap.mediaType)
         switch snap.type {
         case .image:
             showImage(urlString: snap.mediaUrl)
@@ -49,7 +48,6 @@ class SnapPreviewCell: UICollectionViewCell {
         
         if let filePath = Bundle.main.path(forResource: "test", ofType: "mov") {
             let url = URL(fileURLWithPath: filePath)
-            print("got the url")
             let avItem = AVPlayerItem(url: url)
             videoPlayer.replaceCurrentItem(with: avItem)
             videoPlayer.play()

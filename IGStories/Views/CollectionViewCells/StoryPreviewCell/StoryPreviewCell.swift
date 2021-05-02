@@ -17,8 +17,7 @@ class StoryPreviewCell: UICollectionViewCell {
     @IBOutlet weak var userView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var lastUpdateLabel: UILabel!
-    @IBOutlet weak var optionsButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var messageTextField: UITextField!
@@ -79,6 +78,8 @@ class StoryPreviewCell: UICollectionViewCell {
     }
     
     //MARK: - IBActions
+    @IBAction func closeButtonAction(_ sender: UIButton) {
+    }
     
     //MARK: - Functions
     func configure(with story: IGStory, index: Int) {

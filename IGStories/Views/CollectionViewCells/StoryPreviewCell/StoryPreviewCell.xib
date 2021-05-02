@@ -107,13 +107,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qyj-yv-zzf" userLabel="LastUpdatedTime">
-                                        <rect key="frame" x="104.5" y="13.5" width="36.5" height="17.5"/>
-                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CdR-qc-LCu" userLabel="OptionsButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CdR-qc-LCu" userLabel="CloseButton">
                                         <rect key="frame" x="249" y="0.0" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Hrb-xL-sfJ"/>
@@ -122,6 +116,9 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="close"/>
+                                        <connections>
+                                            <action selector="closeButtonAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Qvw-Nn-6RN"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -129,12 +126,10 @@
                                     <constraint firstItem="s6q-5j-Ljy" firstAttribute="top" secondItem="Cmx-oD-sfu" secondAttribute="top" id="EUU-V9-pFg"/>
                                     <constraint firstAttribute="trailing" secondItem="CdR-qc-LCu" secondAttribute="trailing" constant="8" id="Qgr-0l-MRR"/>
                                     <constraint firstItem="hel-gN-zh0" firstAttribute="centerY" secondItem="Cmx-oD-sfu" secondAttribute="centerY" id="UTK-ED-P8f"/>
-                                    <constraint firstItem="qyj-yv-zzf" firstAttribute="centerY" secondItem="Cmx-oD-sfu" secondAttribute="centerY" id="WFV-pq-Eca"/>
                                     <constraint firstItem="hel-gN-zh0" firstAttribute="leading" secondItem="s6q-5j-Ljy" secondAttribute="trailing" constant="8" symbolic="YES" id="XgC-SN-XQU"/>
                                     <constraint firstItem="s6q-5j-Ljy" firstAttribute="leading" secondItem="Cmx-oD-sfu" secondAttribute="leading" id="aAm-Rh-Ore"/>
                                     <constraint firstItem="CdR-qc-LCu" firstAttribute="top" secondItem="Cmx-oD-sfu" secondAttribute="top" id="hsK-yM-HJZ"/>
                                     <constraint firstAttribute="height" constant="44" id="las-kL-J8c"/>
-                                    <constraint firstItem="qyj-yv-zzf" firstAttribute="leading" secondItem="hel-gN-zh0" secondAttribute="trailing" constant="16" id="mjT-43-rIT"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -167,11 +162,10 @@
             <size key="customSize" width="317" height="558"/>
             <connections>
                 <outlet property="bottomView" destination="3bK-A4-uiM" id="euS-Qf-KkJ"/>
+                <outlet property="closeButton" destination="CdR-qc-LCu" id="gcJ-9O-a42"/>
                 <outlet property="emojiButton" destination="mfQ-aZ-EgC" id="Ilf-pX-V1x"/>
-                <outlet property="lastUpdateLabel" destination="qyj-yv-zzf" id="B3c-VI-7M2"/>
                 <outlet property="mainView" destination="NTE-3i-sGb" id="lMw-Tn-sOR"/>
                 <outlet property="messageTextField" destination="7L2-o4-17y" id="Wc1-Vl-Yvp"/>
-                <outlet property="optionsButton" destination="CdR-qc-LCu" id="gcJ-9O-a42"/>
                 <outlet property="profilePictureImageView" destination="s6q-5j-Ljy" id="H5y-qe-Rts"/>
                 <outlet property="progressView" destination="pRX-Ba-BJn" id="tMl-IM-mBw"/>
                 <outlet property="shareButton" destination="2n7-kx-oFF" id="N3O-CB-dWp"/>

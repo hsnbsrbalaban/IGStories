@@ -8,9 +8,10 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    
+    //MARK: - Variables
     private var igStories: [IGStory] = StoryManager.shared.getStoriesArray()
     
+    //MARK: - UI
     private lazy var layout: UICollectionViewFlowLayout = {
         let ly = UICollectionViewFlowLayout()
         ly.itemSize = CGSize(width: 60, height: 81)
@@ -32,6 +33,7 @@ class HomeViewController: UIViewController {
         return cv
     }()
 
+    //MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -46,6 +48,7 @@ class HomeViewController: UIViewController {
     }
 }
 
+//MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return igStories.count

@@ -17,7 +17,6 @@ class IGSnap: Codable {
     
     var mediaType: String
     var mediaUrl: String
-    var lastUpdated: String
     
     var type: IGSnapType {
         switch mediaType {
@@ -33,7 +32,6 @@ class IGSnap: Codable {
     enum CodingKeys: String, CodingKey {
         case mediaType = "media_type"
         case mediaUrl = "media_url"
-        case lastUpdated = "last_updated"
     }
     
 }

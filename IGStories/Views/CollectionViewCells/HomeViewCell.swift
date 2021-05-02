@@ -8,10 +8,12 @@
 import UIKit
 
 class HomeViewCell: UICollectionViewCell {
-    
+    //MARK: - UI Variables
     var imageView = UIImageView()
     var label = UILabel()
     
+    //MARK: - Functions
+    /// Customizes ui elements to cell and adds constraints
     func setupUI(imageUrlString: String, username: String) {
         label.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
