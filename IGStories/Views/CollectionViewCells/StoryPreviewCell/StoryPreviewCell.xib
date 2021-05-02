@@ -19,7 +19,7 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NTE-3i-sGb" userLabel="MainView">
                         <rect key="frame" x="0.0" y="44" width="317" height="454"/>
-                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3bK-A4-uiM" userLabel="BottomView">
                         <rect key="frame" x="0.0" y="498" width="317" height="60"/>
@@ -27,11 +27,26 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0HI-8o-msk">
                                 <rect key="frame" x="8" y="8" width="301" height="44"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Mesaj gönder" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7L2-o4-17y">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QXD-k1-HYQ" userLabel="TextField Container">
                                         <rect key="frame" x="0.0" y="0.0" width="197" height="44"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="   Send message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7L2-o4-17y">
+                                                <rect key="frame" x="0.0" y="6" width="197" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="32" id="oyb-aL-1SH"/>
+                                                </constraints>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="7L2-o4-17y" firstAttribute="leading" secondItem="QXD-k1-HYQ" secondAttribute="leading" id="YFa-pV-Tf5"/>
+                                            <constraint firstItem="7L2-o4-17y" firstAttribute="centerY" secondItem="QXD-k1-HYQ" secondAttribute="centerY" id="Z6t-gh-LYQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="7L2-o4-17y" secondAttribute="trailing" id="s7g-fm-eX9"/>
+                                        </constraints>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RZJ-mX-hBV">
                                         <rect key="frame" x="205" y="0.0" width="96" height="44"/>
                                         <subviews>
@@ -41,8 +56,8 @@
                                                     <constraint firstAttribute="width" constant="44" id="89V-Gy-ZHo"/>
                                                     <constraint firstAttribute="height" constant="44" id="Mzd-tR-Rah"/>
                                                 </constraints>
-                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="face.smiling" catalog="system"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="smile"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-kx-oFF" userLabel="ShareButton">
                                                 <rect key="frame" x="52" y="0.0" width="44" height="44"/>
@@ -50,15 +65,15 @@
                                                     <constraint firstAttribute="height" constant="44" id="V0j-rh-YSK"/>
                                                     <constraint firstAttribute="width" constant="44" id="Zjx-L6-r1i"/>
                                                 </constraints>
-                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="pencil.circle" catalog="system"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="send"/>
                                             </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="0HI-8o-msk" secondAttribute="trailing" constant="8" id="0VJ-Sy-nK9"/>
                             <constraint firstItem="0HI-8o-msk" firstAttribute="centerY" secondItem="3bK-A4-uiM" secondAttribute="centerY" id="910-yT-hNe"/>
@@ -89,13 +104,13 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hel-gN-zh0" userLabel="Username">
                                         <rect key="frame" x="52" y="13.5" width="36.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qyj-yv-zzf" userLabel="LastUpdatedTime">
-                                        <rect key="frame" x="96.5" y="13.5" width="36.5" height="17.5"/>
+                                        <rect key="frame" x="104.5" y="13.5" width="36.5" height="17.5"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CdR-qc-LCu" userLabel="OptionsButton">
@@ -104,11 +119,12 @@
                                             <constraint firstAttribute="height" constant="44" id="Hrb-xL-sfJ"/>
                                             <constraint firstAttribute="width" constant="44" id="iRv-e4-Xc8"/>
                                         </constraints>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="doc" catalog="system"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="close"/>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="s6q-5j-Ljy" firstAttribute="top" secondItem="Cmx-oD-sfu" secondAttribute="top" id="EUU-V9-pFg"/>
                                     <constraint firstAttribute="trailing" secondItem="CdR-qc-LCu" secondAttribute="trailing" constant="8" id="Qgr-0l-MRR"/>
@@ -118,11 +134,11 @@
                                     <constraint firstItem="s6q-5j-Ljy" firstAttribute="leading" secondItem="Cmx-oD-sfu" secondAttribute="leading" id="aAm-Rh-Ore"/>
                                     <constraint firstItem="CdR-qc-LCu" firstAttribute="top" secondItem="Cmx-oD-sfu" secondAttribute="top" id="hsK-yM-HJZ"/>
                                     <constraint firstAttribute="height" constant="44" id="las-kL-J8c"/>
-                                    <constraint firstItem="qyj-yv-zzf" firstAttribute="leading" secondItem="hel-gN-zh0" secondAttribute="trailing" constant="8" id="mjT-43-rIT"/>
+                                    <constraint firstItem="qyj-yv-zzf" firstAttribute="leading" secondItem="hel-gN-zh0" secondAttribute="trailing" constant="16" id="mjT-43-rIT"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="pRX-Ba-BJn" firstAttribute="leading" secondItem="lyv-Ip-eE0" secondAttribute="leading" constant="4" id="1ey-pG-SIR"/>
                             <constraint firstAttribute="height" constant="64" id="FBu-Ej-mXy"/>
@@ -167,20 +183,11 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="doc" catalog="system" width="115" height="128"/>
-        <image name="face.smiling" catalog="system" width="128" height="121"/>
-        <image name="pencil.circle" catalog="system" width="128" height="121"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="close" width="16" height="16"/>
+        <image name="send" width="24" height="24"/>
+        <image name="smile" width="24" height="24"/>
         <systemColor name="systemGray4Color">
             <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

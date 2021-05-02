@@ -11,15 +11,15 @@ class IGStory: Codable {
     
     var id: String
     var user: IGUser
-    var storyCount: Int
-    var stories: [IGSnap]
-    var lastSeenStoryIndex: Int = 0
+    var snapCount: Int
+    var snaps: [IGSnap]
+    var lastSeenSnapIndex: Int = -1
     
     enum CodingKeys: String, CodingKey {
         case id
         case user
-        case storyCount = "story_count"
-        case stories
+        case snapCount = "snap_count"
+        case snaps
     }
     
 }

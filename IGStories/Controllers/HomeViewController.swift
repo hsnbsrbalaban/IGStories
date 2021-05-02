@@ -9,9 +9,9 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    var igStoriesArray: [IGStory] = StoryManager.shared.getStoriesArray()
+    private var igStories: [IGStory] = StoryManager.shared.getStoriesArray()
     
-    lazy var layout: UICollectionViewFlowLayout = {
+    private lazy var layout: UICollectionViewFlowLayout = {
         let ly = UICollectionViewFlowLayout()
         ly.itemSize = CGSize(width: 60, height: 81)
         ly.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
         return ly
     }()
     
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
@@ -34,6 +34,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
         
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
@@ -47,17 +48,19 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return igStoriesArray.count
+        return igStories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: HomeViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeviewcell", for: indexPath) as! HomeViewCell
-        cell.setupUI(imageUrlString: igStoriesArray[indexPath.row].user.profilePicUrl, username: igStoriesArray[indexPath.row].user.username)
+        cell.setupUI(imageUrlString: igStories[indexPath.row].user.profilePicUrl, username: igStories[indexPath.row].user.username)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = StoryPreviewViewController.init()
+        vc.selectedIndex = indexPath.row
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
     }
 }

@@ -23,6 +23,7 @@
 		41C28B9B263DE0F400D5FEB7 /* StoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28B9A263DE0F400D5FEB7 /* StoryManager.swift */; };
 		41C28BA0263DE72F00D5FEB7 /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */; };
 		41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */; };
+		41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		41C28B9A263DE0F400D5FEB7 /* StoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryManager.swift; sourceTree = "<group>"; };
 		41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
 		41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPreviewViewController.swift; sourceTree = "<group>"; };
+		41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapPreviewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,8 +140,9 @@
 		41C28B7C263D538B00D5FEB7 /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */,
 				41C28B88263D661400D5FEB7 /* StoryPreviewCell */,
+				41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */,
+				41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				4158462D263D408F00E8AED8 /* HomeViewController.swift in Sources */,
 				41584644263D420300E8AED8 /* IGSnap.swift in Sources */,
 				41C28B9B263DE0F400D5FEB7 /* StoryManager.swift in Sources */,
+				41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */,
 				41C28B7F263D53CE00D5FEB7 /* StoryPreviewCell.swift in Sources */,
 				41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */,
 				41584629263D408F00E8AED8 /* AppDelegate.swift in Sources */,

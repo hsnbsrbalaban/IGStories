@@ -9,23 +9,28 @@ import UIKit
 
 class StoryPreviewViewController: UIViewController {
     
-    var igStory: IGStory?
+    var selectedIndex: Int?
     
-    lazy var layout: UICollectionViewFlowLayout = {
+    private var igStories: [IGStory] = StoryManager.shared.getStoriesArray()
+    
+    private lazy var layout: UICollectionViewFlowLayout = {
         let ly = UICollectionViewFlowLayout()
         ly.itemSize = CGSize(width: view.bounds.width - view.safeAreaInsets.left - view.safeAreaInsets.right,
-                             height: (view.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)*0.75)
+                             height: (view.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom))
         ly.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        ly.minimumInteritemSpacing = 0
+        ly.minimumLineSpacing = 0
         ly.scrollDirection = .horizontal
         return ly
     }()
     
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.7411764706, blue: 0.631372549, alpha: 1)
+        cv.isPagingEnabled = true
+        cv.backgroundColor = .clear
         
         cv.delegate = self
         cv.dataSource = self
@@ -35,6 +40,7 @@ class StoryPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
         
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
@@ -43,21 +49,17 @@ class StoryPreviewViewController: UIViewController {
             collectionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
         ])
-
     }
 }
 
 extension StoryPreviewViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return igStories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "previewcell", for: indexPath) as! StoryPreviewCell
-        
-        
+        cell.configure(with: igStories[indexPath.row], index: selectedIndex ?? 0)
         return cell
     }
-    
-    
 }
