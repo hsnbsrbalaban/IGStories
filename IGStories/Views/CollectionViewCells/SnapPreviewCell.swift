@@ -15,16 +15,20 @@ enum MovementDirection {
 
 protocol SnapPreviewCellDelegate: class {
     func move(_ direction: MovementDirection, _ index: Int)
+    func moveToStory(_ direction: MovementDirection)
 }
 
 class SnapPreviewCell: UICollectionViewCell {
+    //MARK: - Constants
+    static let identifier = "SnapPreviewCell"
+    
     //MARK: - Variables
     var snapIndex: Int = -1
-    private var snap: IGSnap?
+    private var snap: IGSnap? = nil
     
-    private var imageView: UIImageView?
-    private var videoPlayer: AVPlayer?
-    private var videoLayer: AVPlayerLayer?
+    private var imageView: UIImageView? = nil
+    private var videoPlayer: AVPlayer? = nil
+    private var videoLayer: AVPlayerLayer? = nil
     
     weak var delegate: SnapPreviewCellDelegate?
     
@@ -43,13 +47,17 @@ class SnapPreviewCell: UICollectionViewCell {
         contentView.backgroundColor = .black
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
         let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        let swipeGR = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
         addGestureRecognizer(tapGR)
         addGestureRecognizer(longPressGR)
+        addGestureRecognizer(swipeGR)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        print("Inside prepare for reuse")
+        snapIndex = -1
+        snap = nil
+        
         imageView?.image = nil
         imageView?.removeFromSuperview()
         imageView = nil
@@ -63,7 +71,6 @@ class SnapPreviewCell: UICollectionViewCell {
     
     //MARK: - Functions
     func configure(storyIndex: Int) {
-        prepareForReuse()
         let snap = StoryManager.shared.getSnap(for: storyIndex, snapIndex: snapIndex)
         
         self.snap = snap
@@ -79,6 +86,7 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private func showImage(urlString: String) {
         imageView = UIImageView(frame: .zero)
+        imageView?.contentMode = .scaleAspectFit
         
         guard let iv = imageView else { return }
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -131,10 +139,18 @@ class SnapPreviewCell: UICollectionViewCell {
     @objc func didLongPress(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began || gesture.state == .ended {
             if gesture.state == .began {
-                print("began")
+                print("began long press")
             } else {
                 print("end")
             }
+        }
+    }
+    
+    @objc func didSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .left {
+            delegate?.moveToStory(.forward)
+        } else if gesture.direction == .right {
+            delegate?.moveToStory(.backward)
         }
     }
 }

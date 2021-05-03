@@ -17,8 +17,14 @@ class StoryPreviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: view.bounds.size.width,
+                                 height: view.bounds.size.height)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.scrollDirection = .horizontal
         
-        let layout = CubicCollectionViewLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.showsHorizontalScrollIndicator = false
@@ -29,7 +35,7 @@ class StoryPreviewViewController: UIViewController {
         
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.register(UINib(nibName: "StoryPreviewCell", bundle: nil), forCellWithReuseIdentifier: "previewcell")
+        collectionView?.register(UINib(nibName: "StoryPreviewCell", bundle: nil), forCellWithReuseIdentifier: StoryPreviewCell.identifier)
         
         guard let collectionView = collectionView else { return }
         view.addSubview(collectionView)
@@ -55,7 +61,7 @@ extension StoryPreviewViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "previewcell", for: indexPath) as! StoryPreviewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryPreviewCell.identifier, for: indexPath) as! StoryPreviewCell
         cell.storyIndex = indexPath.row
         cell.delegate = self
         cell.configure()
@@ -71,7 +77,7 @@ extension StoryPreviewViewController: StoryPreviewCellDelegate {
                 collectionView?.scrollToItem(at: IndexPath(item: index + 1, section: 0), at: .centeredHorizontally, animated: true)
             }
         case .backward:
-            if index != 0 {
+            if index > 0 {
                 collectionView?.scrollToItem(at: IndexPath(item: index - 1, section: 0), at: .centeredHorizontally, animated: true)
             }
         }

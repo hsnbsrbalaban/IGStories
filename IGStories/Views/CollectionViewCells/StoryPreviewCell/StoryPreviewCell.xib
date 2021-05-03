@@ -162,15 +162,10 @@
             <size key="customSize" width="317" height="558"/>
             <connections>
                 <outlet property="bottomView" destination="3bK-A4-uiM" id="euS-Qf-KkJ"/>
-                <outlet property="closeButton" destination="CdR-qc-LCu" id="gcJ-9O-a42"/>
-                <outlet property="emojiButton" destination="mfQ-aZ-EgC" id="Ilf-pX-V1x"/>
                 <outlet property="mainView" destination="NTE-3i-sGb" id="lMw-Tn-sOR"/>
                 <outlet property="messageTextField" destination="7L2-o4-17y" id="Wc1-Vl-Yvp"/>
                 <outlet property="profilePictureImageView" destination="s6q-5j-Ljy" id="H5y-qe-Rts"/>
                 <outlet property="progressView" destination="pRX-Ba-BJn" id="tMl-IM-mBw"/>
-                <outlet property="shareButton" destination="2n7-kx-oFF" id="N3O-CB-dWp"/>
-                <outlet property="topView" destination="lyv-Ip-eE0" id="g01-aE-1OE"/>
-                <outlet property="userView" destination="Cmx-oD-sfu" id="UcH-tn-ymA"/>
                 <outlet property="usernameLabel" destination="hel-gN-zh0" id="66j-gI-fVr"/>
             </connections>
             <point key="canvasLocation" x="6.5217391304347831" y="105.80357142857143"/>

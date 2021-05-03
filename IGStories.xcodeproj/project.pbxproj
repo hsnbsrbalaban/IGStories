@@ -25,7 +25,6 @@
 		41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */; };
 		41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */; };
 		41C28BB7263E9E3500D5FEB7 /* test.mov in Resources */ = {isa = PBXBuildFile; fileRef = 41C28BB6263E9E3500D5FEB7 /* test.mov */; };
-		41C28BBB263EB85200D5FEB7 /* CubicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BBA263EB85200D5FEB7 /* CubicCollectionViewLayout.swift */; };
 		41C48358263EEB7300E5DA5E /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +49,6 @@
 		41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPreviewViewController.swift; sourceTree = "<group>"; };
 		41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapPreviewCell.swift; sourceTree = "<group>"; };
 		41C28BB6263E9E3500D5FEB7 /* test.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.mov; sourceTree = "<group>"; };
-		41C28BBA263EB85200D5FEB7 /* CubicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubicCollectionViewLayout.swift; sourceTree = "<group>"; };
 		41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,7 +166,6 @@
 			children = (
 				41C28B9A263DE0F400D5FEB7 /* StoryManager.swift */,
 				41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */,
-				41C28BBA263EB85200D5FEB7 /* CubicCollectionViewLayout.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -250,7 +247,6 @@
 				4158462D263D408F00E8AED8 /* HomeViewController.swift in Sources */,
 				41584644263D420300E8AED8 /* IGSnap.swift in Sources */,
 				41C28B9B263DE0F400D5FEB7 /* StoryManager.swift in Sources */,
-				41C28BBB263EB85200D5FEB7 /* CubicCollectionViewLayout.swift in Sources */,
 				41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */,
 				41C28B7F263D53CE00D5FEB7 /* StoryPreviewCell.swift in Sources */,
 				41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */,
