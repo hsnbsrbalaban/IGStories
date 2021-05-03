@@ -10,12 +10,12 @@
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/1/400/400",
                 
                 },
                 {
                     "media_type": "video",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/2/400/400",
                 
                 }
             ]
@@ -24,18 +24,18 @@
             "id": "2",
             "user": {
                 "username": "deneme1",
-                "profile_picture": "https://picsum.photos/400"
+                "profile_picture": "https://picsum.photos/id/3/400/400"
             },
             "snap_count": 2,
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/4/400/400",
                 
                 },
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/5/400/400",
                 
                 }
             ]
@@ -44,18 +44,18 @@
             "id": "3",
             "user": {
                 "username": "deneme2",
-                "profile_picture": "https://picsum.photos/400"
+                "profile_picture": "https://picsum.photos/id/6/400/400"
             },
             "snap_count": 2,
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/7/400/400",
                 
                 },
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/8/400/400",
                 
                 }
             ]
@@ -64,18 +64,18 @@
             "id": "4",
             "user": {
                 "username": "deneme3",
-                "profile_picture": "https://picsum.photos/400"
+                "profile_picture": "https://picsum.photos/id/9/400/400"
             },
             "snap_count": 2,
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/10/400/400",
                 
                 },
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/11/400/400",
                 
                 }
             ]
@@ -84,18 +84,18 @@
             "id": "5",
             "user": {
                 "username": "deneme4",
-                "profile_picture": "https://picsum.photos/400"
+                "profile_picture": "https://picsum.photos/id/12/400/400"
             },
             "snap_count": 2,
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/13/400/400",
                 
                 },
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/14/400/400",
                 
                 }
             ]
@@ -104,18 +104,18 @@
             "id": "6",
             "user": {
                 "username": "deneme5",
-                "profile_picture": "https://picsum.photos/400"
+                "profile_picture": "https://picsum.photos/id/15/400/400"
             },
             "snap_count": 2,
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/16/400/400",
                 
                 },
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/17/400/400",
                 
                 }
             ]
@@ -124,18 +124,18 @@
             "id": "7",
             "user": {
                 "username": "deneme6",
-                "profile_picture": "https://picsum.photos/400"
+                "profile_picture": "https://picsum.photos/id/18/400/400"
             },
             "snap_count": 2,
             "snaps": [
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/19/400/400",
                 
                 },
                 {
                     "media_type": "image",
-                    "media_url": "https://picsum.photos/400",
+                    "media_url": "https://picsum.photos/id/20/400/400",
                 
                 }
             ]

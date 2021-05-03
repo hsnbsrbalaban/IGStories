@@ -8,13 +8,11 @@
 import UIKit
 
 class StoryManager {
-    //MARK: - Instance & Initializers
+    //MARK: - Instance
     static let shared = StoryManager()
     
-    init() { }
-    
     //MARK: - Variables
-    private var igData: IGData?
+    private var igData = IGData()
     
     //MARK: - Functions
     func fetchStories() {
@@ -29,21 +27,21 @@ class StoryManager {
         }
     }
     
-    func getStoriesArray() -> [IGStory] {
-        return igData?.data ?? []
+    func getStories() -> [IGStory] {
+        return igData.data
     }
     
-    func loadImageFromUrl(to imageView: UIImageView, urlString: String) {
-        if let url = URL(string: urlString) {
-            let dataTask = URLSession.shared.dataTask(with: url) { data,_,_ in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        imageView.image = UIImage(data: data)
-                    }
-                }
-            }
-            dataTask.resume()
+    func getStory(for storyIndex: Int) -> IGStory {
+        return igData.data[storyIndex]
+    }
+    
+    func getSnap(for storyIndex: Int, snapIndex: Int) -> IGSnap {
+        return igData.data[storyIndex].snaps[snapIndex]
+    }
+    
+    func updateLastSeenSnapIndex(storyIndex: Int, snapIndex: Int) {
+        if igData.data[storyIndex].lastSeenSnapIndex < snapIndex {
+            igData.data[storyIndex].lastSeenSnapIndex = snapIndex
         }
     }
-    
 }

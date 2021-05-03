@@ -24,7 +24,9 @@
 		41C28BA0263DE72F00D5FEB7 /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */; };
 		41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */; };
 		41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */; };
+		41C28BB7263E9E3500D5FEB7 /* test.mov in Resources */ = {isa = PBXBuildFile; fileRef = 41C28BB6263E9E3500D5FEB7 /* test.mov */; };
 		41C28BBB263EB85200D5FEB7 /* CubicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BBA263EB85200D5FEB7 /* CubicCollectionViewLayout.swift */; };
+		41C48358263EEB7300E5DA5E /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +49,9 @@
 		41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
 		41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPreviewViewController.swift; sourceTree = "<group>"; };
 		41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapPreviewCell.swift; sourceTree = "<group>"; };
+		41C28BB6263E9E3500D5FEB7 /* test.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.mov; sourceTree = "<group>"; };
 		41C28BBA263EB85200D5FEB7 /* CubicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubicCollectionViewLayout.swift; sourceTree = "<group>"; };
+		41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				4158464D263D483900E8AED8 /* igdata.json */,
+				41C28BB6263E9E3500D5FEB7 /* test.mov */,
 				41584636263D409000E8AED8 /* Info.plist */,
 				4158463D263D418D00E8AED8 /* Resources */,
 				41C28B99263DE02900D5FEB7 /* Helpers */,
@@ -162,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				41C28B9A263DE0F400D5FEB7 /* StoryManager.swift */,
+				41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */,
 				41C28BBA263EB85200D5FEB7 /* CubicCollectionViewLayout.swift */,
 			);
 			path = Helpers;
@@ -225,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41584635263D409000E8AED8 /* LaunchScreen.storyboard in Resources */,
+				41C28BB7263E9E3500D5FEB7 /* test.mov in Resources */,
 				4158464E263D483900E8AED8 /* igdata.json in Resources */,
 				41584632263D409000E8AED8 /* Assets.xcassets in Resources */,
 				41584630263D408F00E8AED8 /* Main.storyboard in Resources */,
@@ -247,6 +254,7 @@
 				41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */,
 				41C28B7F263D53CE00D5FEB7 /* StoryPreviewCell.swift in Sources */,
 				41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */,
+				41C48358263EEB7300E5DA5E /* ImageViewExtension.swift in Sources */,
 				41584629263D408F00E8AED8 /* AppDelegate.swift in Sources */,
 				4158462B263D408F00E8AED8 /* SceneDelegate.swift in Sources */,
 				41C28BA0263DE72F00D5FEB7 /* HomeViewCell.swift in Sources */,

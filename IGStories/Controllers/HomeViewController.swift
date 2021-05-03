@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     //MARK: - Variables
-    private var igStories: [IGStory] = StoryManager.shared.getStoriesArray()
+    private var igStories: [IGStory] = StoryManager.shared.getStories()
     
     //MARK: - UI
     private lazy var layout: UICollectionViewFlowLayout = {
@@ -64,6 +64,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let vc = StoryPreviewViewController.init()
         vc.selectedIndex = indexPath.row
         vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true, completion: nil)
+        present(vc, animated: false, completion: nil)
     }
 }

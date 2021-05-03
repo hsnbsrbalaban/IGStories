@@ -11,6 +11,10 @@ class IGData: Codable {
     
     var data: [IGStory]
     
+    init() {
+        data = []
+    }
+    
     enum CodingKeys: String, CodingKey {
         case data
     }

@@ -9,6 +9,7 @@ import UIKit
 import AVKit
 
 protocol StoryPreviewCellDelegate: class {
+    func move(_ direction: MovementDirection, _ index: Int)
     func closeButtonPressed()
 }
 
@@ -29,48 +30,16 @@ class StoryPreviewCell: UICollectionViewCell {
     @IBOutlet weak var shareButton: UIButton!
     
     //MARK: - Variables
+    var storyIndex: Int = -1
     private var snaps: [IGSnap] = []
     private var lastSeenSnapIndex: Int = -1
+    private var collectionView: UICollectionView?
     
     weak var delegate: StoryPreviewCellDelegate?
-    
-    //MARK: - UI
-    private lazy var layout: UICollectionViewFlowLayout = {
-        let ly = UICollectionViewFlowLayout()
-        ly.itemSize = CGSize(width: UIScreen.main.bounds.width,
-                             height: mainView.frame.height)
-        ly.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        ly.minimumInteritemSpacing = 0
-        ly.minimumLineSpacing = 0
-        ly.scrollDirection = .horizontal
-        return ly
-    }()
-    
-    private lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.showsVerticalScrollIndicator = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.isPagingEnabled = true
-        cv.backgroundColor = .clear
-        
-        cv.delegate = self
-        cv.dataSource = self
-        cv.register(SnapPreviewCell.self, forCellWithReuseIdentifier: "snapcell")
-        return cv
-    }()
     
     //MARK: - Overrides
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        mainView.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            collectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
-            collectionView.heightAnchor.constraint(equalTo: mainView.heightAnchor)
-        ])
         
         profilePictureImageView.layer.cornerRadius = profilePictureImageView.bounds.width * 0.5
         profilePictureImageView.layer.borderWidth = 2
@@ -90,9 +59,44 @@ class StoryPreviewCell: UICollectionViewCell {
     }
     
     //MARK: - Functions
-    func configure(with story: IGStory, index: Int) {
+    private func setupCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width,
+                             height: mainView.frame.height)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.scrollDirection = .horizontal
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView?.showsVerticalScrollIndicator = false
+        collectionView?.showsHorizontalScrollIndicator = false
+        collectionView?.translatesAutoresizingMaskIntoConstraints = false
+        collectionView?.isPagingEnabled = true
+        collectionView?.isScrollEnabled = false
+        collectionView?.backgroundColor = .clear
+        
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.register(SnapPreviewCell.self, forCellWithReuseIdentifier: "snapcell")
+        
+        guard let collectionView = collectionView else { return }
+        
+        mainView.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
+            collectionView.heightAnchor.constraint(equalTo: mainView.heightAnchor)
+        ])
+    }
+    
+    func configure() {
+        setupCollectionView()
+        
+        let story = StoryManager.shared.getStory(for: storyIndex)
+        
         let user = story.user
-        StoryManager.shared.loadImageFromUrl(to: profilePictureImageView, urlString: user.profilePicUrl)
+        profilePictureImageView.loadImageFromUrl(urlString: user.profilePicUrl)
         usernameLabel.text = user.username
         
         snaps = story.snaps
@@ -100,6 +104,7 @@ class StoryPreviewCell: UICollectionViewCell {
     }
 }
 
+//MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return snaps.count
@@ -107,11 +112,23 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "snapcell", for: indexPath) as! SnapPreviewCell
-        cell.configure(with: snaps[indexPath.row])
+        cell.snapIndex = indexPath.row
+        cell.delegate = self
+        cell.configure(storyIndex: storyIndex)
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let cell = cell as? SnapPreviewCell {
+            cell.configure(storyIndex: storyIndex)
+        }
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let cell = cell as? SnapPreviewCell {
+            cell.prepareForReuse()
+        }
+    }
 }
 
 //MARK: - Cubic transition functions
@@ -127,5 +144,26 @@ extension StoryPreviewCell {
             fatalError("LayoutAttributes of class CubicCollectionViewLayoutAttributes expected")
         }
         layer.anchorPoint = cubicAttributes.anchorPoint
+    }
+}
+
+//MARK: - SnapPreviewCellDelegate
+extension StoryPreviewCell: SnapPreviewCellDelegate {
+    func move(_ direction: MovementDirection, _ index: Int) {
+        switch direction {
+        case .forward:
+            if index + 1 == snaps.count {
+                delegate?.move(.forward, storyIndex)
+            } else {
+                collectionView?.scrollToItem(at: IndexPath(item: index + 1, section: 0), at: .centeredHorizontally, animated: true)
+            }
+            
+        case .backward:
+            if index == 0 {
+                delegate?.move(.backward, storyIndex)
+            } else {
+                collectionView?.scrollToItem(at: IndexPath(item: index - 1, section: 0), at: .centeredHorizontally, animated: true)
+            }
+        }
     }
 }
