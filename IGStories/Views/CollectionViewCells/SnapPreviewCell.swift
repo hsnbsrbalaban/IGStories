@@ -14,8 +14,14 @@ enum MovementDirection {
 }
 
 protocol SnapPreviewCellDelegate: class {
+    /// Move between snaps (tap gesture)
     func move(_ direction: MovementDirection, _ index: Int)
+    /// Move between stories (swipe gesture)
     func moveToStory(_ direction: MovementDirection)
+    /// Inform the delegate that long press gesture began
+    func longPressBegan()
+    /// Inform the delegate that long press gesture ended
+    func longPressEnded()
 }
 
 class SnapPreviewCell: UICollectionViewCell {
@@ -23,14 +29,12 @@ class SnapPreviewCell: UICollectionViewCell {
     static let identifier = "SnapPreviewCell"
     
     //MARK: - Variables
-    var snapIndex: Int = -1
-    private var snap: IGSnap? = nil
+    private var snapIndex: Int = -1
     
     private var imageView: UIImageView? = nil
-    private var videoPlayer: AVPlayer? = nil
-    private var videoLayer: AVPlayerLayer? = nil
+    private var videoView: VideoPlayerView? = nil
     
-    weak var delegate: SnapPreviewCellDelegate?
+    private weak var delegate: SnapPreviewCellDelegate?
     
     //MARK: - Initializer & Overrides
     override init(frame: CGRect) {
@@ -45,6 +49,8 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private func commonInit() {
         contentView.backgroundColor = .black
+        
+        // Add gestures
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
         let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
         let swipeGR = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
@@ -56,24 +62,24 @@ class SnapPreviewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         snapIndex = -1
-        snap = nil
         
         imageView?.image = nil
         imageView?.removeFromSuperview()
         imageView = nil
         
-        videoPlayer?.pause()
-        videoLayer?.player = nil
-        videoLayer?.removeFromSuperlayer()
-        videoPlayer = nil
-        videoLayer = nil
+        videoView?.removeFromSuperview()
+        videoView = nil
+        
+        delegate = nil
     }
     
     //MARK: - Functions
-    func configure(storyIndex: Int) {
+    func configure(storyIndex: Int, snapIndex: Int, delegate: SnapPreviewCellDelegate) {
+        self.snapIndex = snapIndex
+        self.delegate = delegate
+        
         let snap = StoryManager.shared.getSnap(for: storyIndex, snapIndex: snapIndex)
         
-        self.snap = snap
         switch snap.type {
         case .image:
             showImage(urlString: snap.mediaUrl)
@@ -88,42 +94,27 @@ class SnapPreviewCell: UICollectionViewCell {
         imageView = UIImageView(frame: .zero)
         imageView?.contentMode = .scaleAspectFit
         
-        guard let iv = imageView else { return }
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(imageView!)
+        addViewToContentView(view: imageView)
         
-        NSLayoutConstraint.activate([
-            iv.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
-            iv.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            iv.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            iv.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
-        iv.loadImageFromUrl(urlString: urlString)
+        imageView?.loadImageFromUrl(urlString: urlString)
     }
     
     private func showVideo(urlString: String) {
-        videoPlayer = AVPlayer()
-        
-        guard let vp = videoPlayer else { return }
-        videoLayer = AVPlayerLayer(player: vp)
-        videoLayer?.frame = contentView.bounds
-        videoLayer?.videoGravity = .resizeAspect
-        
-        guard let vl = videoLayer else { return }
-        contentView.layer.addSublayer(vl)
-        NotificationCenter.default.addObserver(self, selector: #selector(videoDidEnd), name: .AVPlayerItemDidPlayToEndTime, object: nil)
-        
-        if let filePath = Bundle.main.path(forResource: "test", ofType: "mov") {
-            let url = URL(fileURLWithPath: filePath)
-            let avItem = AVPlayerItem(url: url)
-            vp.replaceCurrentItem(with: avItem)
-            vp.play()
-        }
+        videoView = VideoPlayerView(frame: contentView.bounds, urlString: urlString, delegate: self)
+        addViewToContentView(view: videoView)
     }
     
-    @objc func videoDidEnd() {
-        print("video ended")
+    private func addViewToContentView(view: UIView?) {
+        guard let view = view else { return }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(view)
+        
+        NSLayoutConstraint.activate([
+            view.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
+            view.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            view.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     @objc func didTap(_ gesture: UITapGestureRecognizer) {
@@ -152,5 +143,11 @@ class SnapPreviewCell: UICollectionViewCell {
         } else if gesture.direction == .right {
             delegate?.moveToStory(.backward)
         }
+    }
+}
+
+extension SnapPreviewCell: VideoPlayerViewDelegate {
+    func videoDidEnd() {
+        
     }
 }

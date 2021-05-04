@@ -62,9 +62,7 @@ extension StoryPreviewViewController: UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryPreviewCell.identifier, for: indexPath) as! StoryPreviewCell
-        cell.storyIndex = indexPath.row
-        cell.delegate = self
-        cell.configure()
+        cell.configure(storyIndex: indexPath.row, delegate: self)
         return cell
     }
 }

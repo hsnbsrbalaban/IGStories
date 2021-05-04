@@ -28,12 +28,12 @@ class StoryPreviewCell: UICollectionViewCell {
     @IBOutlet weak var messageTextField: UITextField!
     
     //MARK: - Variables
-    var storyIndex: Int = -1
+    private var storyIndex: Int = -1
     private var snaps: [IGSnap] = []
     private var lastSeenSnapIndex: Int = -1
     private var collectionView: UICollectionView? = nil
     
-    weak var delegate: StoryPreviewCellDelegate?
+    private weak var delegate: StoryPreviewCellDelegate?
     
     //MARK: - Overrides
     override func awakeFromNib() {
@@ -71,7 +71,10 @@ class StoryPreviewCell: UICollectionViewCell {
     }
     
     //MARK: - Functions
-    func configure() {
+    func configure(storyIndex: Int, delegate: StoryPreviewCellDelegate) {
+        self.storyIndex = storyIndex
+        self.delegate = delegate
+        
         setupCollectionView()
         
         let story = StoryManager.shared.getStory(for: storyIndex)
@@ -124,16 +127,13 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SnapPreviewCell.identifier, for: indexPath) as! SnapPreviewCell
-        cell.snapIndex = indexPath.row
-        cell.delegate = self
-        cell.configure(storyIndex: storyIndex)
+        cell.configure(storyIndex: storyIndex, snapIndex: indexPath.row, delegate: self)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? SnapPreviewCell {
-            cell.snapIndex = indexPath.row
-            cell.configure(storyIndex: storyIndex)
+            cell.configure(storyIndex: storyIndex, snapIndex: indexPath.row, delegate: self)
         }
     }
 
@@ -166,5 +166,13 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
     
     func moveToStory(_ direction: MovementDirection) {
         delegate?.move(direction, storyIndex)
+    }
+    
+    func longPressBegan() {
+        
+    }
+    
+    func longPressEnded() {
+        
     }
 }
