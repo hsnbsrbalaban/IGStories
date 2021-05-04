@@ -16,8 +16,6 @@ enum MovementDirection {
 protocol SnapPreviewCellDelegate: class {
     /// Move between snaps (tap gesture)
     func move(_ direction: MovementDirection, _ index: Int)
-    /// Move between stories (swipe gesture)
-    func moveToStory(_ direction: MovementDirection)
     /// Inform the delegate that long press gesture began
     func longPressBegan()
     /// Inform the delegate that long press gesture ended
@@ -53,10 +51,8 @@ class SnapPreviewCell: UICollectionViewCell {
         // Add gestures
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
         let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
-        let swipeGR = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
         addGestureRecognizer(tapGR)
         addGestureRecognizer(longPressGR)
-        addGestureRecognizer(swipeGR)
     }
     
     override func prepareForReuse() {
@@ -134,14 +130,6 @@ class SnapPreviewCell: UICollectionViewCell {
             } else {
                 print("end")
             }
-        }
-    }
-    
-    @objc func didSwipe(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .left {
-            delegate?.moveToStory(.forward)
-        } else if gesture.direction == .right {
-            delegate?.moveToStory(.backward)
         }
     }
 }

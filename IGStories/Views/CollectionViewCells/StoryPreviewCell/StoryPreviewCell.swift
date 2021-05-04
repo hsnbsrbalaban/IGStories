@@ -164,10 +164,6 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
         }
     }
     
-    func moveToStory(_ direction: MovementDirection) {
-        delegate?.move(direction, storyIndex)
-    }
-    
     func longPressBegan() {
         
     }
