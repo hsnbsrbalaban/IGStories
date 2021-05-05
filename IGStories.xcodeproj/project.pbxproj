@@ -28,9 +28,11 @@
 		41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */; };
 		41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */; };
 		41C48358263EEB7300E5DA5E /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */; };
+		8BD2A84A7582FAC296514A09 /* Pods_IGStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B10EFC2BE3B9A95955BA14F /* Pods_IGStories.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01114671CBB4BD0ECBB44781 /* Pods-IGStories.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IGStories.release.xcconfig"; path = "Target Support Files/Pods-IGStories/Pods-IGStories.release.xcconfig"; sourceTree = "<group>"; };
 		4102514526408D4C00324AA2 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		411DEF942641EA4E00429261 /* SegmentedProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedProgressBar.swift; sourceTree = "<group>"; };
 		411DEF992642995100429261 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +56,8 @@
 		41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPreviewViewController.swift; sourceTree = "<group>"; };
 		41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapPreviewCell.swift; sourceTree = "<group>"; };
 		41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
+		7B10EFC2BE3B9A95955BA14F /* Pods_IGStories.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IGStories.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3EF0ABB5257A043E891EE31 /* Pods-IGStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IGStories.debug.xcconfig"; path = "Target Support Files/Pods-IGStories/Pods-IGStories.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BD2A84A7582FAC296514A09 /* Pods_IGStories.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +77,8 @@
 			children = (
 				41584627263D408F00E8AED8 /* IGStories */,
 				41584626263D408F00E8AED8 /* Products */,
+				447FEDD61C128482A77D69A5 /* Pods */,
+				66A3D09A18EE60F9357DE30D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -176,6 +183,24 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		447FEDD61C128482A77D69A5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F3EF0ABB5257A043E891EE31 /* Pods-IGStories.debug.xcconfig */,
+				01114671CBB4BD0ECBB44781 /* Pods-IGStories.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		66A3D09A18EE60F9357DE30D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B10EFC2BE3B9A95955BA14F /* Pods_IGStories.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -183,9 +208,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 41584639263D409000E8AED8 /* Build configuration list for PBXNativeTarget "IGStories" */;
 			buildPhases = (
+				BBF3DBBF4755949088B774C4 /* [CP] Check Pods Manifest.lock */,
 				41584621263D408F00E8AED8 /* Sources */,
 				41584622263D408F00E8AED8 /* Frameworks */,
 				41584623263D408F00E8AED8 /* Resources */,
+				B5617080AA82B41B554DB530 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -242,6 +269,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B5617080AA82B41B554DB530 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-IGStories/Pods-IGStories-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-IGStories/Pods-IGStories-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IGStories/Pods-IGStories-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBF3DBBF4755949088B774C4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-IGStories-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		41584621263D408F00E8AED8 /* Sources */ = {
@@ -407,6 +476,7 @@
 		};
 		4158463A263D409000E8AED8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F3EF0ABB5257A043E891EE31 /* Pods-IGStories.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -426,6 +496,7 @@
 		};
 		4158463B263D409000E8AED8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01114671CBB4BD0ECBB44781 /* Pods-IGStories.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

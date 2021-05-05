@@ -244,10 +244,19 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
         }
     }
     
+    func moveToStory(_ direction: MovementDirection) {
+        switch direction {
+        case .forward:
+            delegate?.move(.forward, storyIndex)
+        case .backward:
+            delegate?.move(.backward, storyIndex)
+        }
+    }
+    
     func startProgress(for snapIndex: Int, with duration: CMTime?) {
         if snapIndex < snaps.count {
-            if duration != nil {
-                let time = CMTimeGetSeconds(duration!)
+            if let duration = duration {
+                let time = CMTimeGetSeconds(duration)
                 segmentedProgressBars[snapIndex].updateDuration(duration: Double(time))
             }
             

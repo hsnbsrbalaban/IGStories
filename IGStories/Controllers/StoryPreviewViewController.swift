@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AnimatedCollectionViewLayout
 
 class StoryPreviewViewController: UIViewController {
     //MARK: - Variables
@@ -18,7 +19,8 @@ class StoryPreviewViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
 
-        let layout = UICollectionViewFlowLayout()
+        let layout = AnimatedCollectionViewLayout()
+        layout.animator = CubeAttributesAnimator()
         layout.itemSize = CGSize(width: view.bounds.size.width,
                                  height: view.bounds.size.height)
         layout.minimumInteritemSpacing = 0

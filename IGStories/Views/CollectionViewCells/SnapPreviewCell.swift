@@ -16,6 +16,8 @@ enum MovementDirection {
 protocol SnapPreviewCellDelegate: class {
     /// Move between snaps (tap gesture)
     func move(_ direction: MovementDirection, _ index: Int)
+    /// Move between stories (swipe gesture)
+    func moveToStory(_ direction: MovementDirection)
     func startProgress(for snapIndex: Int, with duration: CMTime?)
     func pauseProgress(for snapIndex: Int)
     func resumeProgress(for snapIndex: Int)
@@ -40,6 +42,8 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private var tapGesture: UITapGestureRecognizer?
     private var longPressGesture: UILongPressGestureRecognizer?
+    private var leftSwipeGesture: UISwipeGestureRecognizer?
+    private var rightSwipeGesture: UISwipeGestureRecognizer?
     
     private weak var delegate: SnapPreviewCellDelegate?
     
@@ -71,9 +75,12 @@ class SnapPreviewCell: UICollectionViewCell {
         imageTotalTimeInterval = 0
         delegate = nil
         
-        if let tapGR = tapGesture, let lpGR = longPressGesture {
+        if let tapGR = tapGesture, let lpGR = longPressGesture,
+           let lsGR = leftSwipeGesture, let rsGR = rightSwipeGesture {
             removeGestureRecognizer(tapGR)
             removeGestureRecognizer(lpGR)
+            removeGestureRecognizer(lsGR)
+            removeGestureRecognizer(rsGR)
         }
     }
     
@@ -98,10 +105,20 @@ class SnapPreviewCell: UICollectionViewCell {
         // Add gestures
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
+        rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
-            guard let tapGR = self?.tapGesture, let longPressGR = self?.longPressGesture else { return }
-            self?.addGestureRecognizer(tapGR)
-            self?.addGestureRecognizer(longPressGR)
+            guard let self = self,
+                  let tapGR = self.tapGesture,
+                  let longPressGR = self.longPressGesture,
+                  let lsGR = self.leftSwipeGesture,
+                  let rsGR = self.rightSwipeGesture else { return }
+            lsGR.direction = .left
+            rsGR.direction = .right
+            self.addGestureRecognizer(tapGR)
+            self.addGestureRecognizer(longPressGR)
+            self.addGestureRecognizer(lsGR)
+            self.addGestureRecognizer(rsGR)
         }
         
         StoryManager.shared.updateLastSeenSnapIndex(storyIndex: storyIndex, snapIndex: snapIndex)
@@ -109,7 +126,7 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private func showImage(urlString: String) {
         imageView = UIImageView(frame: .zero)
-        imageView?.contentMode = .scaleAspectFill
+        imageView?.contentMode = .scaleAspectFit
         
         addViewToContentView(view: imageView)
         
@@ -194,6 +211,11 @@ extension SnapPreviewCell {
                     fatalError("Unknown media type!")
                 }
             }
+    @objc func didSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .left {
+            delegate?.moveToStory(.forward)
+        } else if gesture.direction == .right {
+            delegate?.moveToStory(.backward)
         }
     }
 }

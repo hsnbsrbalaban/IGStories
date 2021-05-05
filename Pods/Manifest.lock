@@ -1,0 +1,16 @@
+PODS:
+  - AnimatedCollectionViewLayout (1.1.0)
+
+DEPENDENCIES:
+  - AnimatedCollectionViewLayout
+
+SPEC REPOS:
+  trunk:
+    - AnimatedCollectionViewLayout
+
+SPEC CHECKSUMS:
+  AnimatedCollectionViewLayout: 0c1a38c4be115c525c887be183fc91ef65737c5d
+
+PODFILE CHECKSUM: 236cd6d956c80ac0237b7f82d7d122d7ac8b16e9
+
+COCOAPODS: 1.10.1
