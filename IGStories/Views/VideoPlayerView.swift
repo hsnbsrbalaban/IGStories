@@ -53,7 +53,6 @@ class VideoPlayerView: UIView {
     /// Deallocate avPlayer and avLayer
     deinit {
         avPlayer?.pause()
-        avPlayer?.removeObserver(self, forKeyPath: "timeControlStatus")
         avLayer?.player = nil
         avLayer?.removeFromSuperlayer()
         avPlayer = nil
@@ -62,9 +61,12 @@ class VideoPlayerView: UIView {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let avPlayer = avPlayer else { return }
-        if keyPath == "timeControlStatus" {
-            if avPlayer.timeControlStatus == .playing {
-                delegate?.videoDidStart(with: avPlayer.currentItem?.duration)
+        if avPlayer.observationInfo != nil {
+            if keyPath == "timeControlStatus" {
+                if avPlayer.timeControlStatus == .playing {
+                    delegate?.videoDidStart(with: avPlayer.currentItem?.duration)
+                    avPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+                }
             }
         }
     }

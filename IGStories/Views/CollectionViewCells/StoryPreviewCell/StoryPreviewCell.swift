@@ -159,6 +159,7 @@ class StoryPreviewCell: UICollectionViewCell {
             collectionView.topAnchor.constraint(equalTo: mv.topAnchor),
             collectionView.heightAnchor.constraint(equalTo: mv.heightAnchor)
         ])
+        layoutIfNeeded()
     }
     
     private func setupProgressBars() {

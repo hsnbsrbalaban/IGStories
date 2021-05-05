@@ -28,6 +28,7 @@ class SnapPreviewCell: UICollectionViewCell {
     static let kImageTimeInterval: TimeInterval = 5.0
     
     //MARK: - Variables
+    private var storyIndex: Int = -1
     private var snapIndex: Int = -1
     private var type: IGSnapType = .unknown
     
@@ -36,6 +37,9 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private var imageTimer: Timer? = nil
     private var imageTotalTimeInterval: TimeInterval = 0
+    
+    private var tapGesture: UITapGestureRecognizer?
+    private var longPressGesture: UILongPressGestureRecognizer?
     
     private weak var delegate: SnapPreviewCellDelegate?
     
@@ -52,16 +56,11 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private func commonInit() {
         contentView.backgroundColor = .black
-        
-        // Add gestures
-        let tapGR = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
-        addGestureRecognizer(tapGR)
-        addGestureRecognizer(longPressGR)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        storyIndex = -1
         snapIndex = -1
         type = .unknown
         
@@ -71,10 +70,16 @@ class SnapPreviewCell: UICollectionViewCell {
         
         imageTotalTimeInterval = 0
         delegate = nil
+        
+        if let tapGR = tapGesture, let lpGR = longPressGesture {
+            removeGestureRecognizer(tapGR)
+            removeGestureRecognizer(lpGR)
+        }
     }
     
     //MARK: - Functions
     func configure(storyIndex: Int, snapIndex: Int, delegate: SnapPreviewCellDelegate) {
+        self.storyIndex = storyIndex
         self.snapIndex = snapIndex
         self.delegate = delegate
 
@@ -89,6 +94,17 @@ class SnapPreviewCell: UICollectionViewCell {
         case .unknown:
             fatalError("Unknown media type!")
         }
+        
+        // Add gestures
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            guard let tapGR = self?.tapGesture, let longPressGR = self?.longPressGesture else { return }
+            self?.addGestureRecognizer(tapGR)
+            self?.addGestureRecognizer(longPressGR)
+        }
+        
+        StoryManager.shared.updateLastSeenSnapIndex(storyIndex: storyIndex, snapIndex: snapIndex)
     }
     
     private func showImage(urlString: String) {
@@ -139,13 +155,15 @@ class SnapPreviewCell: UICollectionViewCell {
 //MARK: - Gesture Functions
 extension SnapPreviewCell {
     @objc func didTap(_ gesture: UITapGestureRecognizer) {
-        destroyTimer()
-        destroyVideoView()
         let location = gesture.location(in: self)
-        
         if location.x > bounds.width / 2 {
+            destroyTimer()
+            destroyVideoView()
             delegate?.move(.forward, snapIndex)
         } else {
+            if snapIndex == 0 && storyIndex == 0 { return }
+            destroyTimer()
+            destroyVideoView()
             delegate?.move(.backward, snapIndex)
         }
     }
