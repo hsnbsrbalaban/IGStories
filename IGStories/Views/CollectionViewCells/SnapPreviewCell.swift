@@ -26,11 +26,17 @@ class SnapPreviewCell: UICollectionViewCell {
     //MARK: - Constants
     static let identifier = "SnapPreviewCell"
     
+    private let kImageTimeInterval: TimeInterval = 5.0
+    
     //MARK: - Variables
     private var snapIndex: Int = -1
+    private var type: IGSnapType = .unknown
     
     private var imageView: UIImageView? = nil
     private var videoView: VideoPlayerView? = nil
+    
+    private var imageTimer: Timer? = nil
+    private var imageTotalTimeInterval: TimeInterval = 0
     
     private weak var delegate: SnapPreviewCellDelegate?
     
@@ -58,14 +64,13 @@ class SnapPreviewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         snapIndex = -1
+        type = .unknown
         
-        imageView?.image = nil
-        imageView?.removeFromSuperview()
-        imageView = nil
+        destroyImageView()
+        destroyVideoView()
+        destroyTimer()
         
-        videoView?.removeFromSuperview()
-        videoView = nil
-        
+        imageTotalTimeInterval = 0
         delegate = nil
     }
     
@@ -73,9 +78,10 @@ class SnapPreviewCell: UICollectionViewCell {
     func configure(storyIndex: Int, snapIndex: Int, delegate: SnapPreviewCellDelegate) {
         self.snapIndex = snapIndex
         self.delegate = delegate
-        
+        print("in configure for story: \(storyIndex) , snap: \(snapIndex)")
         let snap = StoryManager.shared.getSnap(for: storyIndex, snapIndex: snapIndex)
         
+        type = snap.type
         switch snap.type {
         case .image:
             showImage(urlString: snap.mediaUrl)
@@ -92,7 +98,12 @@ class SnapPreviewCell: UICollectionViewCell {
         
         addViewToContentView(view: imageView)
         
-        imageView?.loadImageFromUrl(urlString: urlString)
+        imageView?.loadImageFromUrl(urlString: urlString, completion: { [weak self] result in
+            guard let self = self else { return }
+            if result {
+                self.startOrResumeTimer()
+            }
+        })
     }
     
     private func showVideo(urlString: String) {
@@ -113,7 +124,23 @@ class SnapPreviewCell: UICollectionViewCell {
         ])
     }
     
+    private func destroyImageView() {
+        imageView?.image = nil
+        imageView?.removeFromSuperview()
+        imageView = nil
+    }
+    
+    private func destroyVideoView() {
+        videoView?.removeFromSuperview()
+        videoView = nil
+    }
+}
+
+//MARK: - Gesture Functions
+extension SnapPreviewCell {
     @objc func didTap(_ gesture: UITapGestureRecognizer) {
+        destroyTimer()
+        destroyVideoView()
         let location = gesture.location(in: self)
         
         if location.x > bounds.width / 2 {
@@ -126,16 +153,52 @@ class SnapPreviewCell: UICollectionViewCell {
     @objc func didLongPress(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began || gesture.state == .ended {
             if gesture.state == .began {
-                print("began long press")
+                switch type {
+                case .image:
+                    if let timer = imageTimer {
+                        imageTotalTimeInterval += timer.fireDate.timeIntervalSinceNow
+                    }
+                    imageTimer?.invalidate()
+                case .video:
+                    videoView?.pauseVideo()
+                case .unknown:
+                    fatalError("Unknown media type!")
+                }
             } else {
-                print("end")
+                switch type {
+                case .image:
+                    startOrResumeTimer()
+                case .video:
+                    videoView?.playVideo()
+                case .unknown:
+                    fatalError("Unknown media type!")
+                }
             }
         }
     }
 }
 
+//MARK: - Timer Functions
+extension SnapPreviewCell {
+    private func startOrResumeTimer() {
+        print("Start or resume timer")
+        imageTimer = Timer.scheduledTimer(withTimeInterval: kImageTimeInterval - imageTotalTimeInterval, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.delegate?.move(.forward, self.snapIndex)
+        }
+    }
+    
+    func destroyTimer() {
+        print("Destroy timer")
+        imageTimer?.invalidate()
+        imageTimer = nil
+    }
+}
+
+//MARK: - VideoPlayerViewDelegate & Video Functions
 extension SnapPreviewCell: VideoPlayerViewDelegate {
     func videoDidEnd() {
-        
+        delegate?.move(.forward, snapIndex)
     }
 }

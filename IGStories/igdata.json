@@ -21,7 +21,7 @@
                 {
                     "media_type": "video",
                     "media_url": "https://picsum.photos/id/21/400/400",
-                
+                    "duration": 5.0
                 },
                 {
                     "media_type": "image",
@@ -31,7 +31,7 @@
                 {
                     "media_type": "video",
                     "media_url": "https://picsum.photos/id/23/800/800",
-                
+                    "duration": 5.0
                 }
             ]
         },

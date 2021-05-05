@@ -43,6 +43,6 @@ class HomeViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = contentView.bounds.width * 0.5
         imageView.layer.borderColor = #colorLiteral(red: 0.4078431373, green: 0.4745098039, blue: 0.5019607843, alpha: 1)
         imageView.layer.borderWidth = 2
-        imageView.loadImageFromUrl(urlString: imageUrlString)
+        imageView.loadImageFromUrl(urlString: imageUrlString, completion: nil)
     }
 }

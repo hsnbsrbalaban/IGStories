@@ -31,6 +31,7 @@ class StoryPreviewViewController: UIViewController {
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
         collectionView?.isPagingEnabled = true
         collectionView?.isScrollEnabled = false
+        collectionView?.isPrefetchingEnabled = false
         collectionView?.backgroundColor = .clear
         
         collectionView?.delegate = self

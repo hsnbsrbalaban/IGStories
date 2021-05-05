@@ -60,6 +60,14 @@ class VideoPlayerView: UIView {
     }
     
     //MARK: - Functions
+    func playVideo() {
+        avPlayer?.play()
+    }
+    
+    func pauseVideo() {
+        avPlayer?.pause()
+    }
+    
     @objc private func videoDidEnd() {
         delegate?.videoDidEnd()
     }

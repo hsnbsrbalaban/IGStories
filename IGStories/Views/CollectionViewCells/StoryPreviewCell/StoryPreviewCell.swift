@@ -80,7 +80,7 @@ class StoryPreviewCell: UICollectionViewCell {
         let story = StoryManager.shared.getStory(for: storyIndex)
         
         let user = story.user
-        profilePictureImageView.loadImageFromUrl(urlString: user.profilePicUrl)
+        profilePictureImageView.loadImageFromUrl(urlString: user.profilePicUrl, completion: nil)
         usernameLabel.text = user.username
         
         snaps = story.snaps
@@ -127,19 +127,13 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SnapPreviewCell.identifier, for: indexPath) as! SnapPreviewCell
-        cell.configure(storyIndex: storyIndex, snapIndex: indexPath.row, delegate: self)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.prepareForReuse()
         if let cell = cell as? SnapPreviewCell {
             cell.configure(storyIndex: storyIndex, snapIndex: indexPath.row, delegate: self)
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let cell = cell as? SnapPreviewCell {
-            cell.prepareForReuse()
         }
     }
 }
