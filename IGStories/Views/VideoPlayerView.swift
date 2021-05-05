@@ -9,6 +9,7 @@ import UIKit
 import AVKit
 
 protocol VideoPlayerViewDelegate: class {
+    func videoDidStart()
     func videoDidEnd()
 }
 
@@ -42,6 +43,11 @@ class VideoPlayerView: UIView {
                 let avItem = AVPlayerItem(url: url)
                 vp.replaceCurrentItem(with: avItem)
                 vp.play()
+                // there is a latency while starting the video
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.delegate?.videoDidStart()
+                }
             }
         }
     }

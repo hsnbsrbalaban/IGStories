@@ -16,10 +16,9 @@ enum MovementDirection {
 protocol SnapPreviewCellDelegate: class {
     /// Move between snaps (tap gesture)
     func move(_ direction: MovementDirection, _ index: Int)
-    /// Inform the delegate that long press gesture began
-    func longPressBegan(for snapIndex: Int)
-    /// Inform the delegate that long press gesture ended
-    func longPressEnded(for snapIndex: Int)
+    func startProgress(for snapIndex: Int)
+    func pauseProgress(for snapIndex: Int)
+    func resumeProgress(for snapIndex: Int)
 }
 
 class SnapPreviewCell: UICollectionViewCell {
@@ -101,6 +100,7 @@ class SnapPreviewCell: UICollectionViewCell {
         imageView?.loadImageFromUrl(urlString: urlString, completion: { [weak self] result in
             guard let self = self else { return }
             if result {
+                self.delegate?.startProgress(for: self.snapIndex)
                 self.startOrResumeTimer()
             }
         })
@@ -153,7 +153,7 @@ extension SnapPreviewCell {
     @objc func didLongPress(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began || gesture.state == .ended {
             if gesture.state == .began {
-                delegate?.longPressBegan(for: snapIndex)
+                delegate?.pauseProgress(for: snapIndex)
                 switch type {
                 case .image:
                     if let timer = imageTimer {
@@ -166,7 +166,7 @@ extension SnapPreviewCell {
                     fatalError("Unknown media type!")
                 }
             } else {
-                delegate?.longPressEnded(for: snapIndex)
+                delegate?.resumeProgress(for: snapIndex)
                 switch type {
                 case .image:
                     startOrResumeTimer()
@@ -200,6 +200,10 @@ extension SnapPreviewCell {
 
 //MARK: - VideoPlayerViewDelegate & Video Functions
 extension SnapPreviewCell: VideoPlayerViewDelegate {
+    func videoDidStart() {
+        delegate?.startProgress(for: snapIndex)
+    }
+    
     func videoDidEnd() {
         delegate?.move(.forward, snapIndex)
     }

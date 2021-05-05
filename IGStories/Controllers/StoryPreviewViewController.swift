@@ -80,6 +80,8 @@ extension StoryPreviewViewController: StoryPreviewCellDelegate {
         case .forward:
             if index + 1 < igStories.count {
                 collectionView?.scrollToItem(at: IndexPath(item: index + 1, section: 0), at: .centeredHorizontally, animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
             }
         case .backward:
             if index > 0 {

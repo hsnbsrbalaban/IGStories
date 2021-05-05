@@ -173,7 +173,7 @@ class StoryPreviewCell: UICollectionViewCell {
         for snap in snaps {
             switch snap.type {
             case .image:
-                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 5)
+                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: SnapPreviewCell.kImageTimeInterval)
                 sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
                 sbp.topColor = .white
                 sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
@@ -200,7 +200,6 @@ class StoryPreviewCell: UICollectionViewCell {
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(snaps.count)
         return snaps.count
     }
     
@@ -225,6 +224,7 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             if index + 1 == snaps.count {
                 delegate?.move(.forward, storyIndex)
             } else {
+                segmentedProgressBars[index].skip()
                 collectionView?.scrollToItem(at: IndexPath(item: index + 1, section: 0), at: .centeredHorizontally, animated: false)
             }
             
@@ -232,16 +232,28 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             if index == 0 {
                 delegate?.move(.backward, storyIndex)
             } else {
+                segmentedProgressBars[index].rewind()
+                segmentedProgressBars[index].isPaused = true
                 collectionView?.scrollToItem(at: IndexPath(item: index - 1, section: 0), at: .centeredHorizontally, animated: false)
             }
         }
     }
     
-    func longPressBegan(for snapIndex: Int) {
-        
+    func startProgress(for snapIndex: Int) {
+        if snapIndex < snaps.count {
+            segmentedProgressBars[snapIndex].rewind()
+        }
     }
     
-    func longPressEnded(for snapIndex: Int) {
-        
+    func pauseProgress(for snapIndex: Int) {
+        if snapIndex < snaps.count {
+            segmentedProgressBars[snapIndex].isPaused = true
+        }
+    }
+    
+    func resumeProgress(for snapIndex: Int) {
+        if snapIndex < snaps.count {
+            segmentedProgressBars[snapIndex].isPaused = false
+        }
     }
 }
