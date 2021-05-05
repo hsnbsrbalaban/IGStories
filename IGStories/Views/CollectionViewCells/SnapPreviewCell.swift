@@ -17,16 +17,16 @@ protocol SnapPreviewCellDelegate: class {
     /// Move between snaps (tap gesture)
     func move(_ direction: MovementDirection, _ index: Int)
     /// Inform the delegate that long press gesture began
-    func longPressBegan()
+    func longPressBegan(for snapIndex: Int)
     /// Inform the delegate that long press gesture ended
-    func longPressEnded()
+    func longPressEnded(for snapIndex: Int)
 }
 
 class SnapPreviewCell: UICollectionViewCell {
     //MARK: - Constants
     static let identifier = "SnapPreviewCell"
     
-    private let kImageTimeInterval: TimeInterval = 5.0
+    static let kImageTimeInterval: TimeInterval = 5.0
     
     //MARK: - Variables
     private var snapIndex: Int = -1
@@ -94,7 +94,7 @@ class SnapPreviewCell: UICollectionViewCell {
     
     private func showImage(urlString: String) {
         imageView = UIImageView(frame: .zero)
-        imageView?.contentMode = .scaleAspectFit
+        imageView?.contentMode = .scaleAspectFill
         
         addViewToContentView(view: imageView)
         
@@ -153,6 +153,7 @@ extension SnapPreviewCell {
     @objc func didLongPress(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began || gesture.state == .ended {
             if gesture.state == .began {
+                delegate?.longPressBegan(for: snapIndex)
                 switch type {
                 case .image:
                     if let timer = imageTimer {
@@ -165,6 +166,7 @@ extension SnapPreviewCell {
                     fatalError("Unknown media type!")
                 }
             } else {
+                delegate?.longPressEnded(for: snapIndex)
                 switch type {
                 case .image:
                     startOrResumeTimer()
@@ -182,7 +184,7 @@ extension SnapPreviewCell {
 extension SnapPreviewCell {
     private func startOrResumeTimer() {
         print("Start or resume timer")
-        imageTimer = Timer.scheduledTimer(withTimeInterval: kImageTimeInterval - imageTotalTimeInterval, repeats: false) { [weak self] _ in
+        imageTimer = Timer.scheduledTimer(withTimeInterval: SnapPreviewCell.kImageTimeInterval - imageTotalTimeInterval, repeats: false) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.move(.forward, self.snapIndex)

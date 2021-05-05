@@ -18,21 +18,21 @@ class StoryPreviewCell: UICollectionViewCell {
     static let identifier = "StoryPreviewCell"
     
     //MARK: - IBOutlets
-    @IBOutlet weak var mainView: UIView!
-    
-    @IBOutlet weak var progressView: UIView!
+    @IBOutlet weak var userView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
-    
-    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var messageTextField: UITextField!
     
     //MARK: - Variables
     private var storyIndex: Int = -1
-    private var snaps: [IGSnap] = []
     private var lastSeenSnapIndex: Int = -1
+    private var snaps: [IGSnap] = []
+    
     private var collectionView: UICollectionView? = nil
     private var segmentedProgressBars: [SegmentedProgressBar] = []
+    
+    private var progressView: UIView?
+    private var mainView: UIView?
     
     private weak var delegate: StoryPreviewCellDelegate?
     
@@ -54,9 +54,7 @@ class StoryPreviewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         storyIndex = -1
-        snaps = []
         lastSeenSnapIndex = -1
         
         profilePictureImageView.image = nil
@@ -64,6 +62,17 @@ class StoryPreviewCell: UICollectionViewCell {
         
         collectionView?.removeFromSuperview()
         collectionView = nil
+        
+        segmentedProgressBars.forEach({ $0.removeFromSuperview() })
+        segmentedProgressBars.removeAll()
+        
+        progressView?.removeFromSuperview()
+        progressView = nil
+        
+        mainView?.removeFromSuperview()
+        mainView = nil
+        
+        delegate = nil
     }
     
     //MARK: - IBActions
@@ -76,24 +85,56 @@ class StoryPreviewCell: UICollectionViewCell {
         self.storyIndex = storyIndex
         self.delegate = delegate
         
-        setupCollectionView()
-        
         let story = StoryManager.shared.getStory(for: storyIndex)
-        
+        snaps = story.snaps
+        lastSeenSnapIndex = story.lastSeenSnapIndex
         let user = story.user
         profilePictureImageView.loadImageFromUrl(urlString: user.profilePicUrl, completion: nil)
         usernameLabel.text = user.username
         
-        snaps = story.snaps
-        lastSeenSnapIndex = story.lastSeenSnapIndex
-        
+        setupViews()
+        setupCollectionView()
         setupProgressBars()
     }
     
+    private func setupViews() {
+        mainView = UIView(frame: .zero)
+        guard let mv = mainView else { return }
+        mv.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mv)
+        
+        NSLayoutConstraint.activate([
+            mv.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
+            mv.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            mv.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            mv.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -60) //60 for bottom view
+        ])
+        
+        progressView = UIView(frame: .zero)
+        guard let pv = progressView else { return }
+        pv.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(pv)
+        
+        NSLayoutConstraint.activate([
+            pv.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            pv.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            pv.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            pv.heightAnchor.constraint(equalToConstant: 10)
+        ])
+        
+        contentView.bringSubviewToFront(pv)
+        contentView.bringSubviewToFront(userView)
+        layoutIfNeeded()
+    }
+    
     private func setupCollectionView() {
+        guard let mv = mainView else {
+            fatalError("main view is not created!")
+        }
+
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width,
-                                 height: mainView.bounds.height)
+        layout.itemSize = CGSize(width: mv.bounds.width,
+                                 height: mv.bounds.height)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
@@ -111,27 +152,47 @@ class StoryPreviewCell: UICollectionViewCell {
         collectionView?.register(SnapPreviewCell.self, forCellWithReuseIdentifier: SnapPreviewCell.identifier)
         
         guard let collectionView = collectionView else { return }
-        
-        mainView.addSubview(collectionView)
+        mv.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            collectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
-            collectionView.heightAnchor.constraint(equalTo: mainView.heightAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: mv.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: mv.leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: mv.topAnchor),
+            collectionView.heightAnchor.constraint(equalTo: mv.heightAnchor)
         ])
     }
     
     private func setupProgressBars() {
-        let width = (UIScreen.main.bounds.width / CGFloat(snaps.count))// - 2
-        let height = progressView.bounds.height / 2
+        guard let pv = progressView else {
+            fatalError("progress view is not created!")
+        }
         
-        for i in 0..<snaps.count {
-            let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 5)
-            sbp.frame = CGRect(x: (width * CGFloat(i)), y: 0, width: width, height: height)
-            progressView.addSubview(sbp)
+        let width = (pv.frame.width / CGFloat(snaps.count)) - 2
+        let height = pv.bounds.height * 0.5
+        
+        var i: CGFloat = 0
+        for snap in snaps {
+            switch snap.type {
+            case .image:
+                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 5)
+                sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
+                sbp.topColor = .white
+                sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
+                segmentedProgressBars.append(sbp)
+                pv.addSubview(sbp)
+                
+            case .video:
+                let duration = snap.duration ?? 1
+                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: duration)
+                sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
+                sbp.topColor = .white
+                sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
+                segmentedProgressBars.append(sbp)
+                pv.addSubview(sbp)
             
-            sbp.topColor = .white
-            sbp.bottomColor = UIColor.white.withAlphaComponent(0.25)
+            case .unknown:
+                fatalError("unknown media type")
+            }
+            i += 1
         }
     }
 }
@@ -139,6 +200,7 @@ class StoryPreviewCell: UICollectionViewCell {
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(snaps.count)
         return snaps.count
     }
     
@@ -175,11 +237,11 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
         }
     }
     
-    func longPressBegan() {
+    func longPressBegan(for snapIndex: Int) {
         
     }
     
-    func longPressEnded() {
+    func longPressEnded(for snapIndex: Int) {
         
     }
 }
