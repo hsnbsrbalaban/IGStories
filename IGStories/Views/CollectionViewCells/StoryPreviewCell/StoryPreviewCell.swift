@@ -32,6 +32,7 @@ class StoryPreviewCell: UICollectionViewCell {
     private var snaps: [IGSnap] = []
     private var lastSeenSnapIndex: Int = -1
     private var collectionView: UICollectionView? = nil
+    private var segmentedProgressBars: [SegmentedProgressBar] = []
     
     private weak var delegate: StoryPreviewCellDelegate?
     
@@ -85,6 +86,8 @@ class StoryPreviewCell: UICollectionViewCell {
         
         snaps = story.snaps
         lastSeenSnapIndex = story.lastSeenSnapIndex
+        
+        setupProgressBars()
     }
     
     private func setupCollectionView() {
@@ -116,6 +119,20 @@ class StoryPreviewCell: UICollectionViewCell {
             collectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
             collectionView.heightAnchor.constraint(equalTo: mainView.heightAnchor)
         ])
+    }
+    
+    private func setupProgressBars() {
+        let width = (UIScreen.main.bounds.width / CGFloat(snaps.count))// - 2
+        let height = progressView.bounds.height / 2
+        
+        for i in 0..<snaps.count {
+            let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 5)
+            sbp.frame = CGRect(x: (width * CGFloat(i)), y: 0, width: width, height: height)
+            progressView.addSubview(sbp)
+            
+            sbp.topColor = .white
+            sbp.bottomColor = UIColor.white.withAlphaComponent(0.25)
+        }
     }
 }
 
