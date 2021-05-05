@@ -51,7 +51,7 @@ class SegmentedProgressBar: UIView {
     }
     
     private var segments = [Segment]()
-    private let duration: TimeInterval
+    private var duration: TimeInterval
     private var hasDoneLayout = false // hacky way to prevent layouting again
     private var currentAnimationIndex = 0
     
@@ -143,6 +143,10 @@ class SegmentedProgressBar: UIView {
         prevSegment.topSegmentView.frame.size.width = 0
         self.animate(animationIndex: newIndex)
         self.delegate?.segmentedProgressBarChangedIndex(index: newIndex)
+    }
+    
+    func updateDuration(duration: TimeInterval) {
+        self.duration = duration
     }
 }
 

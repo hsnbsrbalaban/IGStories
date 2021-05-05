@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4102514626408D4C00324AA2 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4102514526408D4C00324AA2 /* VideoPlayerView.swift */; };
-		411DEF8D2641A62D00429261 /* test.mov in Resources */ = {isa = PBXBuildFile; fileRef = 411DEF8C2641A62D00429261 /* test.mov */; };
 		411DEF952641EA4E00429261 /* SegmentedProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411DEF942641EA4E00429261 /* SegmentedProgressBar.swift */; };
+		411DEF9A2642995100429261 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411DEF992642995100429261 /* SplashViewController.swift */; };
 		41584629263D408F00E8AED8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41584628263D408F00E8AED8 /* AppDelegate.swift */; };
 		4158462B263D408F00E8AED8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4158462A263D408F00E8AED8 /* SceneDelegate.swift */; };
 		4158462D263D408F00E8AED8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4158462C263D408F00E8AED8 /* HomeViewController.swift */; };
@@ -27,14 +27,13 @@
 		41C28BA0263DE72F00D5FEB7 /* HomeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */; };
 		41C28BA5263DF0E100D5FEB7 /* StoryPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */; };
 		41C28BAA263E233500D5FEB7 /* SnapPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */; };
-		41C28BB7263E9E3500D5FEB7 /* test1.mov in Resources */ = {isa = PBXBuildFile; fileRef = 41C28BB6263E9E3500D5FEB7 /* test1.mov */; };
 		41C48358263EEB7300E5DA5E /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4102514526408D4C00324AA2 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
-		411DEF8C2641A62D00429261 /* test.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.mov; sourceTree = "<group>"; };
 		411DEF942641EA4E00429261 /* SegmentedProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedProgressBar.swift; sourceTree = "<group>"; };
+		411DEF992642995100429261 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		41584625263D408F00E8AED8 /* IGStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IGStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41584628263D408F00E8AED8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4158462A263D408F00E8AED8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,7 +53,6 @@
 		41C28B9F263DE72F00D5FEB7 /* HomeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCell.swift; sourceTree = "<group>"; };
 		41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPreviewViewController.swift; sourceTree = "<group>"; };
 		41C28BA9263E233500D5FEB7 /* SnapPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapPreviewCell.swift; sourceTree = "<group>"; };
-		41C28BB6263E9E3500D5FEB7 /* test1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test1.mov; sourceTree = "<group>"; };
 		41C48357263EEB7300E5DA5E /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,8 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				4158464D263D483900E8AED8 /* igdata.json */,
-				41C28BB6263E9E3500D5FEB7 /* test1.mov */,
-				411DEF8C2641A62D00429261 /* test.mov */,
 				41584636263D409000E8AED8 /* Info.plist */,
 				4158463D263D418D00E8AED8 /* Resources */,
 				41C28B99263DE02900D5FEB7 /* Helpers */,
@@ -115,6 +111,7 @@
 			children = (
 				4158462C263D408F00E8AED8 /* HomeViewController.swift */,
 				41C28BA4263DF0E100D5FEB7 /* StoryPreviewViewController.swift */,
+				411DEF992642995100429261 /* SplashViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -237,8 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				41584635263D409000E8AED8 /* LaunchScreen.storyboard in Resources */,
-				411DEF8D2641A62D00429261 /* test.mov in Resources */,
-				41C28BB7263E9E3500D5FEB7 /* test1.mov in Resources */,
 				4158464E263D483900E8AED8 /* igdata.json in Resources */,
 				41584632263D409000E8AED8 /* Assets.xcassets in Resources */,
 				41584630263D408F00E8AED8 /* Main.storyboard in Resources */,
@@ -268,6 +263,7 @@
 				41584648263D42A100E8AED8 /* IGUser.swift in Sources */,
 				4158464B263D465F00E8AED8 /* IGStory.swift in Sources */,
 				4102514626408D4C00324AA2 /* VideoPlayerView.swift in Sources */,
+				411DEF9A2642995100429261 /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

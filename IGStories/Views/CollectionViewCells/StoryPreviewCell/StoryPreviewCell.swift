@@ -232,15 +232,25 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             if index == 0 {
                 delegate?.move(.backward, storyIndex)
             } else {
+                //Stop the current one
                 segmentedProgressBars[index].rewind()
                 segmentedProgressBars[index].isPaused = true
+                //Reset the previous one
+                segmentedProgressBars[index-1].rewind()
+                segmentedProgressBars[index-1].isPaused = true
+                
                 collectionView?.scrollToItem(at: IndexPath(item: index - 1, section: 0), at: .centeredHorizontally, animated: false)
             }
         }
     }
     
-    func startProgress(for snapIndex: Int) {
+    func startProgress(for snapIndex: Int, with duration: CMTime?) {
         if snapIndex < snaps.count {
+            if duration != nil {
+                let time = CMTimeGetSeconds(duration!)
+                segmentedProgressBars[snapIndex].updateDuration(duration: Double(time))
+            }
+            
             segmentedProgressBars[snapIndex].rewind()
         }
     }

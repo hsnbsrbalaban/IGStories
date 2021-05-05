@@ -9,7 +9,7 @@ import UIKit
 import AVKit
 
 protocol VideoPlayerViewDelegate: class {
-    func videoDidStart()
+    func videoDidStart(with duration: CMTime?)
     func videoDidEnd()
 }
 
@@ -25,7 +25,7 @@ class VideoPlayerView: UIView {
         self.delegate = delegate
         
         //TODO: Change this to online url
-        if let _ = URL(string: urlString) {
+        if let url = URL(string: urlString) {
             avPlayer = AVPlayer()
             
             guard let vp = avPlayer else { return }
@@ -35,20 +35,14 @@ class VideoPlayerView: UIView {
             
             guard let vl = avLayer else { return }
             layer.addSublayer(vl)
-
+            
+            avPlayer?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(videoDidEnd), name: .AVPlayerItemDidPlayToEndTime, object: nil)
             
-            if let filePath = Bundle.main.path(forResource: "test", ofType: "mov") {
-                let url = URL(fileURLWithPath: filePath)
-                let avItem = AVPlayerItem(url: url)
-                vp.replaceCurrentItem(with: avItem)
-                vp.play()
-                // there is a latency while starting the video
-                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
-                    guard let self = self else { return }
-                    self.delegate?.videoDidStart()
-                }
-            }
+            let avItem = AVPlayerItem(url: url)
+            vp.replaceCurrentItem(with: avItem)
+            vp.play()
+            
         }
     }
     
@@ -59,10 +53,20 @@ class VideoPlayerView: UIView {
     /// Deallocate avPlayer and avLayer
     deinit {
         avPlayer?.pause()
+        avPlayer?.removeObserver(self, forKeyPath: "timeControlStatus")
         avLayer?.player = nil
         avLayer?.removeFromSuperlayer()
         avPlayer = nil
         avLayer = nil
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let avPlayer = avPlayer else { return }
+        if keyPath == "timeControlStatus" {
+            if avPlayer.timeControlStatus == .playing {
+                delegate?.videoDidStart(with: avPlayer.currentItem?.duration)
+            }
+        }
     }
     
     //MARK: - Functions

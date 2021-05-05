@@ -16,7 +16,7 @@ enum MovementDirection {
 protocol SnapPreviewCellDelegate: class {
     /// Move between snaps (tap gesture)
     func move(_ direction: MovementDirection, _ index: Int)
-    func startProgress(for snapIndex: Int)
+    func startProgress(for snapIndex: Int, with duration: CMTime?)
     func pauseProgress(for snapIndex: Int)
     func resumeProgress(for snapIndex: Int)
 }
@@ -77,10 +77,10 @@ class SnapPreviewCell: UICollectionViewCell {
     func configure(storyIndex: Int, snapIndex: Int, delegate: SnapPreviewCellDelegate) {
         self.snapIndex = snapIndex
         self.delegate = delegate
-        print("in configure for story: \(storyIndex) , snap: \(snapIndex)")
+
         let snap = StoryManager.shared.getSnap(for: storyIndex, snapIndex: snapIndex)
-        
         type = snap.type
+        
         switch snap.type {
         case .image:
             showImage(urlString: snap.mediaUrl)
@@ -100,7 +100,7 @@ class SnapPreviewCell: UICollectionViewCell {
         imageView?.loadImageFromUrl(urlString: urlString, completion: { [weak self] result in
             guard let self = self else { return }
             if result {
-                self.delegate?.startProgress(for: self.snapIndex)
+                self.delegate?.startProgress(for: self.snapIndex, with: nil)
                 self.startOrResumeTimer()
             }
         })
@@ -183,7 +183,6 @@ extension SnapPreviewCell {
 //MARK: - Timer Functions
 extension SnapPreviewCell {
     private func startOrResumeTimer() {
-        print("Start or resume timer")
         imageTimer = Timer.scheduledTimer(withTimeInterval: SnapPreviewCell.kImageTimeInterval - imageTotalTimeInterval, repeats: false) { [weak self] _ in
             guard let self = self else { return }
             
@@ -192,7 +191,6 @@ extension SnapPreviewCell {
     }
     
     func destroyTimer() {
-        print("Destroy timer")
         imageTimer?.invalidate()
         imageTimer = nil
     }
@@ -200,8 +198,8 @@ extension SnapPreviewCell {
 
 //MARK: - VideoPlayerViewDelegate & Video Functions
 extension SnapPreviewCell: VideoPlayerViewDelegate {
-    func videoDidStart() {
-        delegate?.startProgress(for: snapIndex)
+    func videoDidStart(with duration: CMTime?) {
+        delegate?.startProgress(for: snapIndex, with: duration)
     }
     
     func videoDidEnd() {
