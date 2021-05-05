@@ -14,7 +14,7 @@ class SplashViewController: UIViewController {
         
         AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { [weak self] _ in
             guard let self = self else { return }
             let vc = HomeViewController.init()
             vc.modalPresentationStyle = .fullScreen

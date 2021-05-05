@@ -181,8 +181,7 @@ class StoryPreviewCell: UICollectionViewCell {
                 pv.addSubview(sbp)
                 
             case .video:
-                let duration = snap.duration ?? 1
-                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: duration)
+                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 1) // duration will be updated later by the delegation
                 sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
                 sbp.topColor = .white
                 sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
