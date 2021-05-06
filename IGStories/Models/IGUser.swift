@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ User model. Contains username and profile picture url.
+ */
 class IGUser: Codable {
     
     var username: String

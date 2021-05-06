@@ -18,13 +18,13 @@ protocol SnapPreviewCellDelegate: class {
     func move(_ direction: MovementDirection, _ index: Int)
     /// Move between stories (swipe gesture)
     func moveToStory(_ direction: MovementDirection)
-    
+    /// Starts the animation of the related progress bar
     func didDisplayImage(_ snapIndex: Int)
-    
+    /// Starts the animation of the related progress bar
     func didDisplayVideo(_ snapIndex: Int, with duration: CMTime?)
-
+    /// Stops the animation of the related progress bar
     func pauseProgress(for snapIndex: Int)
-    
+    /// Continues the animation of the related progress bar
     func resumeProgress(for snapIndex: Int)
 }
 
@@ -61,7 +61,9 @@ class SnapPreviewCell: UICollectionViewCell {
     private func commonInit() {
         contentView.backgroundColor = .black
     }
-    
+    /**
+     Clear every stored property to its default value.
+     */
     override func prepareForReuse() {
         super.prepareForReuse()
         storyIndex = -1
@@ -80,6 +82,13 @@ class SnapPreviewCell: UICollectionViewCell {
     }
     
     //MARK: - Functions
+    /**
+     Configure the cell with the given indexes.
+     - Parameters:
+        - storyIndex: The index of the cells story.
+        - snapIndex: The index of the cell snap
+        - delegate: Cell's delegate.
+     */
     func configure(storyIndex: Int, snapIndex: Int, delegate: SnapPreviewCellDelegate) {
         self.storyIndex = storyIndex
         self.snapIndex = snapIndex
@@ -97,15 +106,19 @@ class SnapPreviewCell: UICollectionViewCell {
             fatalError("Unknown media type!")
         }
         
-        // Add gestures
+        // Create gestures
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
         leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
         rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
         
+        ///- NOTE: The last seen snap index for the stories are updated here. It passes +1 as the index, this is intended and handled in `StoryManager`.
         StoryManager.shared.updateLastSeenSnapIndex(storyIndex: storyIndex, snapIndex: snapIndex + 1)
     }
-    
+    /**
+     Creates `imageView` and adds it to `contentView`. Notifies the delegate when it is done.
+     - Parameter urlString: String for the url of the desired image.
+     */
     private func showImage(urlString: String) {
         imageView = UIImageView(frame: .zero)
         imageView?.contentMode = .scaleAspectFit
@@ -120,12 +133,18 @@ class SnapPreviewCell: UICollectionViewCell {
             }
         })
     }
-    
+    /**
+     Cretes `videoView` and adds it to `contentView`. Notification of the delegate is done in `VideoPlayerViewdelegate` functions.
+     - Parameter urlString: String for the url of the desired image.
+     */
     private func showVideo(urlString: String) {
         videoView = VideoPlayerView(frame: contentView.bounds, urlString: urlString, delegate: self)
         addViewToContentView(view: videoView)
     }
-    
+    /**
+     Adds the given to `contentView` as subview.
+     - Parameter view: UIView
+     */
     private func addViewToContentView(view: UIView?) {
         guard let view = view else { return }
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -138,13 +157,17 @@ class SnapPreviewCell: UICollectionViewCell {
             view.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
+    /**
+     Removes the `imageView` from its superview.
+     */
     private func destroyImageView() {
         imageView?.image = nil
         imageView?.removeFromSuperview()
         imageView = nil
     }
-    
+    /**
+     Removes the `videoView` from its superview.
+     */
     private func destroyVideoView() {
         videoView?.removeFromSuperview()
         videoView = nil
@@ -153,6 +176,9 @@ class SnapPreviewCell: UICollectionViewCell {
 
 //MARK: - Gesture Functions
 extension SnapPreviewCell {
+    /**
+     Notifies the delegate to move forward or backward between snaps according to the touch location.
+     */
     @objc func didTap(_ gesture: UITapGestureRecognizer) {
         let location = gesture.location(in: self)
         if location.x > bounds.width / 2 {
@@ -164,7 +190,9 @@ extension SnapPreviewCell {
             delegate?.move(.backward, snapIndex)
         }
     }
-    
+    /**
+     Notifies the delegate to stop or continue to animate the related progress bar.
+     */
     @objc func didLongPress(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began || gesture.state == .ended {
             if gesture.state == .began {
@@ -182,7 +210,9 @@ extension SnapPreviewCell {
             }
         }
     }
-    
+    /**
+     Notifies the delegate to move forward or backward between stories according to the swipe direction.
+     */
     @objc func didSwipe(_ gesture: UISwipeGestureRecognizer) {
         if gesture.direction == .left {
             destroyVideoView()
@@ -192,7 +222,9 @@ extension SnapPreviewCell {
             delegate?.moveToStory(.backward)
         }
     }
-    
+    /**
+     Add gestures to the `contentView`. This is called when the image or the video displayed successfully.
+     */
     private func addGestures() {
         guard let tapGR = self.tapGesture,
               let longPressGR = self.longPressGesture,
@@ -209,6 +241,9 @@ extension SnapPreviewCell {
 
 //MARK: - VideoPlayerViewDelegate & Video Functions
 extension SnapPreviewCell: VideoPlayerViewDelegate {
+    /**
+     Add gestures to `contentView` and notify the delegate to start animating the corresponding progress bar.
+     */
     func videoDidStart(with duration: CMTime?) {
         addGestures()
         delegate?.didDisplayVideo(snapIndex, with: duration)

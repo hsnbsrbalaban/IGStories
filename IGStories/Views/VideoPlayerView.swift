@@ -12,6 +12,9 @@ protocol VideoPlayerViewDelegate: class {
     func videoDidStart(with duration: CMTime?)
 }
 
+/**
+ Video player view is created for managing video player initialization and deinitialization efficiently.
+ */
 class VideoPlayerView: UIView {
     //MARK: - Constants
     private let timeObserverKeyPath: String = "timeControlStatus"
@@ -26,7 +29,6 @@ class VideoPlayerView: UIView {
         super.init(frame: frame)
         self.delegate = delegate
         
-        //TODO: Change this to online url
         if let url = URL(string: urlString) {
             avPlayer = AVPlayer()
             
@@ -38,12 +40,12 @@ class VideoPlayerView: UIView {
             guard let vl = avLayer else { return }
             layer.addSublayer(vl)
             
+            // Add time control status observer to avplayer in order to control if the video started playing
             avPlayer?.addObserver(self, forKeyPath: timeObserverKeyPath, options: [.old, .new], context: nil)
 
             let avItem = AVPlayerItem(url: url)
             vp.replaceCurrentItem(with: avItem)
             vp.play()
-            
         }
     }
     
@@ -51,7 +53,9 @@ class VideoPlayerView: UIView {
         super.init(coder: coder)
     }
     
-    /// Deallocate avPlayer and avLayer
+    /**
+     Deallocate avPlayer and avLayer, remove all observers from the view.
+    */
     deinit {
         if avPlayer?.observationInfo != nil {
             NotificationCenter.default.removeObserver(self)
@@ -62,7 +66,9 @@ class VideoPlayerView: UIView {
         avPlayer = nil
         avLayer = nil
     }
-    
+    /**
+     Observe the time control status observer, call `videoDidStart` function
+     */
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let avPlayer = avPlayer else { return }
         if avPlayer.observationInfo != nil {

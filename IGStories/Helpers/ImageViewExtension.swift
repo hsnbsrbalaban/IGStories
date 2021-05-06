@@ -8,6 +8,13 @@
 import UIKit
 
 extension UIImageView {
+    /**
+     Loads the given url image to `image` variable.
+     
+     - Parameters:
+        - urlString: String for the desired url.
+        - completion: Completion block that will be called after the execution.
+     */
     func loadImageFromUrl(urlString: String, completion: ((Bool) -> Void)?) {
         if let url = URL(string: urlString) {
             let dataTask = URLSession.shared.dataTask(with: url) { data,_,_ in
