@@ -25,7 +25,8 @@ class StoryPreviewCell: UICollectionViewCell {
     
     //MARK: - Variables
     private var storyIndex: Int = -1
-    private var lastSeenSnapIndex: Int = -1
+    private var lastSeenSnapIndex: Int = 0
+    private var shouldCheckLastSeenIndex: Bool = true
     private var snaps: [IGSnap] = []
     private var currentSnapIndex: Int = 0
     
@@ -56,7 +57,8 @@ class StoryPreviewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         storyIndex = -1
-        lastSeenSnapIndex = -1
+        lastSeenSnapIndex = 0
+        shouldCheckLastSeenIndex = true
         currentSnapIndex = 0
         
         profilePictureImageView.image = nil
@@ -95,8 +97,8 @@ class StoryPreviewCell: UICollectionViewCell {
         usernameLabel.text = user.username
         
         setupViews()
-        setupCollectionView()
         setupProgressBars()
+        setupCollectionView()
     }
     
     private func setupViews() {
@@ -198,6 +200,18 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if lastSeenSnapIndex != 0 && shouldCheckLastSeenIndex {
+            shouldCheckLastSeenIndex = false
+            collectionView.scrollToItem(at: IndexPath(item: lastSeenSnapIndex, section: 0), at: .centeredHorizontally, animated: false)
+
+            for i in 0..<lastSeenSnapIndex {
+                segmentedProgressBars[i].skip()
+            }
+            if indexPath.row == 0 {
+                return
+            }
+        }
+        
         cell.prepareForReuse()
         if let cell = cell as? SnapPreviewCell {
             cell.configure(storyIndex: storyIndex, snapIndex: indexPath.row, delegate: self)

@@ -13,7 +13,7 @@ class IGStory: Codable {
     var user: IGUser
     var snapCount: Int
     var snaps: [IGSnap]
-    var lastSeenSnapIndex: Int = -1
+    var lastSeenSnapIndex: Int = 0
     
     enum CodingKeys: String, CodingKey {
         case id

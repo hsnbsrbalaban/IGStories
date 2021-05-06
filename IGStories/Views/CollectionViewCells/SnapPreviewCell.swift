@@ -116,7 +116,7 @@ class SnapPreviewCell: UICollectionViewCell {
             self.addGestureRecognizer(rsGR)
         }
         
-        StoryManager.shared.updateLastSeenSnapIndex(storyIndex: storyIndex, snapIndex: snapIndex)
+        StoryManager.shared.updateLastSeenSnapIndex(storyIndex: storyIndex, snapIndex: snapIndex + 1)
     }
     
     private func showImage(urlString: String) {

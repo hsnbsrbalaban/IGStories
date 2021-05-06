@@ -40,6 +40,11 @@ class StoryManager {
     }
     
     func updateLastSeenSnapIndex(storyIndex: Int, snapIndex: Int) {
+        if snapIndex == igData.data[storyIndex].snapCount {
+            igData.data[storyIndex].lastSeenSnapIndex = 0
+            return
+        }
+        
         if igData.data[storyIndex].lastSeenSnapIndex < snapIndex {
             igData.data[storyIndex].lastSeenSnapIndex = snapIndex
         }
