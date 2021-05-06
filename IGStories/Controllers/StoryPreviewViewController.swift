@@ -10,7 +10,8 @@ import AnimatedCollectionViewLayout
 
 class StoryPreviewViewController: UIViewController {
     //MARK: - Variables
-    var selectedIndex: Int?
+    var selectedIndex: Int = 0
+    private var shouldCheckSelectedIndex = true
     private var collectionView: UICollectionView?
     private var igStories: [IGStory] = StoryManager.shared.getStories()
 
@@ -49,12 +50,6 @@ class StoryPreviewViewController: UIViewController {
             collectionView.heightAnchor.constraint(equalToConstant: view.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
         ])
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        if let selectedIndex = selectedIndex {
-            collectionView?.scrollToItem(at: IndexPath(row: selectedIndex, section: 0), at: .centeredHorizontally, animated: false)
-        }
-    }
 }
 
 //MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -69,6 +64,15 @@ extension StoryPreviewViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if selectedIndex != 0, shouldCheckSelectedIndex {
+            shouldCheckSelectedIndex = false
+            collectionView.scrollToItem(at: IndexPath(row: selectedIndex, section: 0), at: .centeredHorizontally, animated: false)
+            
+            if indexPath.row == 0 {
+                return
+            }
+        }
+        
         cell.prepareForReuse()
         if let cell = cell as? StoryPreviewCell {
             cell.configure(storyIndex: indexPath.row, delegate: self)
