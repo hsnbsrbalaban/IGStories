@@ -218,6 +218,7 @@ extension SnapPreviewCell {
             destroyVideoView()
             delegate?.moveToStory(.forward)
         } else if gesture.direction == .right {
+            if storyIndex == 0 { return }
             destroyVideoView()
             delegate?.moveToStory(.backward)
         }
