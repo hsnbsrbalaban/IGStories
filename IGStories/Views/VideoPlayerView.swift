@@ -10,7 +10,6 @@ import AVKit
 
 protocol VideoPlayerViewDelegate: class {
     func videoDidStart(with duration: CMTime?)
-    func videoDidEnd()
 }
 
 class VideoPlayerView: UIView {
@@ -37,7 +36,6 @@ class VideoPlayerView: UIView {
             layer.addSublayer(vl)
             
             avPlayer?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(videoDidEnd), name: .AVPlayerItemDidPlayToEndTime, object: nil)
             
             let avItem = AVPlayerItem(url: url)
             vp.replaceCurrentItem(with: avItem)
@@ -79,9 +77,4 @@ class VideoPlayerView: UIView {
     func pauseVideo() {
         avPlayer?.pause()
     }
-    
-    @objc private func videoDidEnd() {
-        delegate?.videoDidEnd()
-    }
-
 }

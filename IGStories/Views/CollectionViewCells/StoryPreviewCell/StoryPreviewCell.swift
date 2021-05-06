@@ -27,6 +27,7 @@ class StoryPreviewCell: UICollectionViewCell {
     private var storyIndex: Int = -1
     private var lastSeenSnapIndex: Int = -1
     private var snaps: [IGSnap] = []
+    private var currentSnapIndex: Int = 0
     
     private var collectionView: UICollectionView? = nil
     private var segmentedProgressBars: [SegmentedProgressBar] = []
@@ -56,6 +57,7 @@ class StoryPreviewCell: UICollectionViewCell {
         super.prepareForReuse()
         storyIndex = -1
         lastSeenSnapIndex = -1
+        currentSnapIndex = 0
         
         profilePictureImageView.image = nil
         usernameLabel.text = ""
@@ -171,27 +173,14 @@ class StoryPreviewCell: UICollectionViewCell {
         let height = pv.bounds.height * 0.5
         
         var i: CGFloat = 0
-        for snap in snaps {
-            switch snap.type {
-            case .image:
-                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: SnapPreviewCell.kImageTimeInterval)
-                sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
-                sbp.topColor = .white
-                sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
-                segmentedProgressBars.append(sbp)
-                pv.addSubview(sbp)
-                
-            case .video:
-                let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 1) // duration will be updated later by the delegation
-                sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
-                sbp.topColor = .white
-                sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
-                segmentedProgressBars.append(sbp)
-                pv.addSubview(sbp)
+        for _ in snaps {
+            let sbp = SegmentedProgressBar(numberOfSegments: 1, duration: 5, index: Int(i))
+            sbp.frame = CGRect(x: (width * i) + (2 * i), y: 0, width: width, height: height)
+            sbp.topColor = .white
+            sbp.bottomColor = UIColor.white.withAlphaComponent(0.5)
+            segmentedProgressBars.append(sbp)
+            pv.addSubview(sbp)
             
-            case .unknown:
-                fatalError("unknown media type")
-            }
             i += 1
         }
     }
@@ -232,12 +221,10 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             if index == 0 {
                 delegate?.move(.backward, storyIndex)
             } else {
-                //Stop the current one
-                segmentedProgressBars[index].rewind()
-                segmentedProgressBars[index].isPaused = true
-                //Reset the previous one
-                segmentedProgressBars[index-1].rewind()
-                segmentedProgressBars[index-1].isPaused = true
+                //Reset and stop the current one
+                resetProgress(for: index)
+                //Reset the previous one, it will then start when the image loaded
+                resetProgress(for: index - 1)
                 
                 collectionView?.scrollToItem(at: IndexPath(item: index - 1, section: 0), at: .centeredHorizontally, animated: false)
             }
@@ -253,26 +240,43 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
         }
     }
     
-    func startProgress(for snapIndex: Int, with duration: CMTime?) {
-        if snapIndex < snaps.count {
-            if let duration = duration {
-                let time = CMTimeGetSeconds(duration)
-                segmentedProgressBars[snapIndex].updateDuration(duration: Double(time))
-            }
-            
-            segmentedProgressBars[snapIndex].rewind()
+    func didDisplayImage(_ snapIndex: Int) {
+        currentSnapIndex = snapIndex
+        segmentedProgressBars[snapIndex].delegate = self
+        segmentedProgressBars[snapIndex].startAnimation()
+    }
+    
+    func didDisplayVideo(_ snapIndex: Int, with duration: CMTime?) {
+        currentSnapIndex = snapIndex
+        if let duration = duration {
+            let time = CMTimeGetSeconds(duration)
+            segmentedProgressBars[snapIndex].delegate = self
+            segmentedProgressBars[snapIndex].updateDuration(duration: time)
+            segmentedProgressBars[snapIndex].startAnimation()
         }
     }
     
     func pauseProgress(for snapIndex: Int) {
-        if snapIndex < snaps.count {
-            segmentedProgressBars[snapIndex].isPaused = true
-        }
+        segmentedProgressBars[snapIndex].isPaused = true
     }
     
     func resumeProgress(for snapIndex: Int) {
-        if snapIndex < snaps.count {
-            segmentedProgressBars[snapIndex].isPaused = false
+        segmentedProgressBars[snapIndex].isPaused = false
+    }
+    
+    func resetProgress(for snapIndex: Int) {
+        segmentedProgressBars[snapIndex].rewind()
+        segmentedProgressBars[snapIndex].isPaused = true
+    }
+}
+
+extension StoryPreviewCell: SegmentedProgressBarDelegate {
+    func segmentedProgressBarFinished(index: Int, bar: SegmentedProgressBar) {
+        if index == currentSnapIndex {
+            bar.removeDelegate()
+            move(.forward, index)
         }
     }
+    
+    func segmentedProgressBarChangedIndex(index: Int) { }
 }

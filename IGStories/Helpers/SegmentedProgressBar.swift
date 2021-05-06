@@ -11,12 +11,13 @@ import UIKit
 
 protocol SegmentedProgressBarDelegate: class {
     func segmentedProgressBarChangedIndex(index: Int)
-    func segmentedProgressBarFinished()
+    func segmentedProgressBarFinished(index: Int, bar: SegmentedProgressBar)
 }
 
 class SegmentedProgressBar: UIView {
     
     weak var delegate: SegmentedProgressBarDelegate?
+    var index: Int
     var topColor = UIColor.gray {
         didSet {
             self.updateColors()
@@ -55,8 +56,9 @@ class SegmentedProgressBar: UIView {
     private var hasDoneLayout = false // hacky way to prevent layouting again
     private var currentAnimationIndex = 0
     
-    init(numberOfSegments: Int, duration: TimeInterval = 5.0) {
+    init(numberOfSegments: Int, duration: TimeInterval = 5.0, index: Int) {
         self.duration = duration
+        self.index = index
         super.init(frame: CGRect.zero)
         
         for _ in 0..<numberOfSegments {
@@ -123,7 +125,7 @@ class SegmentedProgressBar: UIView {
             self.animate(animationIndex: newIndex)
             self.delegate?.segmentedProgressBarChangedIndex(index: newIndex)
         } else {
-            self.delegate?.segmentedProgressBarFinished()
+            self.delegate?.segmentedProgressBarFinished(index: self.index, bar: self)
         }
     }
     
@@ -131,7 +133,7 @@ class SegmentedProgressBar: UIView {
         let currentSegment = segments[currentAnimationIndex]
         currentSegment.topSegmentView.frame.size.width = currentSegment.bottomSegmentView.frame.width
         currentSegment.topSegmentView.layer.removeAllAnimations()
-        self.next()
+//        self.next()
     }
     
     func rewind() {
@@ -141,12 +143,16 @@ class SegmentedProgressBar: UIView {
         let newIndex = max(currentAnimationIndex - 1, 0)
         let prevSegment = segments[newIndex]
         prevSegment.topSegmentView.frame.size.width = 0
-        self.animate(animationIndex: newIndex)
-        self.delegate?.segmentedProgressBarChangedIndex(index: newIndex)
+//        self.animate(animationIndex: newIndex)
+//        self.delegate?.segmentedProgressBarChangedIndex(index: newIndex)
     }
     
     func updateDuration(duration: TimeInterval) {
         self.duration = duration
+    }
+    
+    func removeDelegate() {
+        self.delegate = nil
     }
 }
 
