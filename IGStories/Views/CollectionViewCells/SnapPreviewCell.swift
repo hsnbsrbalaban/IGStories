@@ -185,8 +185,10 @@ extension SnapPreviewCell {
     
     @objc func didSwipe(_ gesture: UISwipeGestureRecognizer) {
         if gesture.direction == .left {
+            destroyVideoView()
             delegate?.moveToStory(.forward)
         } else if gesture.direction == .right {
+            destroyVideoView()
             delegate?.moveToStory(.backward)
         }
     }
