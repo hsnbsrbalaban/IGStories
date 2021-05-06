@@ -13,6 +13,9 @@ protocol VideoPlayerViewDelegate: class {
 }
 
 class VideoPlayerView: UIView {
+    //MARK: - Constants
+    private let timeObserverKeyPath: String = "timeControlStatus"
+    
     //MARK: - Variables
     private var avPlayer: AVPlayer?
     private var avLayer: AVPlayerLayer?
@@ -35,8 +38,8 @@ class VideoPlayerView: UIView {
             guard let vl = avLayer else { return }
             layer.addSublayer(vl)
             
-            avPlayer?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
-            
+            avPlayer?.addObserver(self, forKeyPath: timeObserverKeyPath, options: [.old, .new], context: nil)
+
             let avItem = AVPlayerItem(url: url)
             vp.replaceCurrentItem(with: avItem)
             vp.play()
@@ -50,6 +53,9 @@ class VideoPlayerView: UIView {
     
     /// Deallocate avPlayer and avLayer
     deinit {
+        if avPlayer?.observationInfo != nil {
+            NotificationCenter.default.removeObserver(self)
+        }
         avPlayer?.pause()
         avLayer?.player = nil
         avLayer?.removeFromSuperlayer()
@@ -60,10 +66,10 @@ class VideoPlayerView: UIView {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let avPlayer = avPlayer else { return }
         if avPlayer.observationInfo != nil {
-            if keyPath == "timeControlStatus" {
+            if keyPath == timeObserverKeyPath {
                 if avPlayer.timeControlStatus == .playing {
                     delegate?.videoDidStart(with: avPlayer.currentItem?.duration)
-                    avPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+                    avPlayer.removeObserver(self, forKeyPath: timeObserverKeyPath)
                 }
             }
         }
