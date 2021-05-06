@@ -18,6 +18,7 @@ class StoryManager {
     /**
      Fetches the story data from the data file (igdata.json).
      Decodes the fetched data to `igData` format.
+     Called in `AppDelegate`, at the launch of the application.
      */
     func fetchStories() {
         do {
