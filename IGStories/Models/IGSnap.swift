@@ -13,6 +13,9 @@ enum IGSnapType: String {
     case unknown
 }
 
+/**
+ Snap model. Contains the snap type and the media url for that snap.
+ */
 class IGSnap: Codable {
     
     var mediaType: String

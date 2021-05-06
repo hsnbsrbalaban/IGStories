@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ Story model. Contains story id, the user who owns the story, snap count, snap array and the last snap index that the user saw.
+ */
 class IGStory: Codable {
     
     var id: String

@@ -14,6 +14,12 @@ protocol SegmentedProgressBarDelegate: class {
     func segmentedProgressBarFinished(index: Int, bar: SegmentedProgressBar)
 }
 
+/**
+ This class is imported from the below repository. Some minor changes applied to it, in order to use it efficiently in this project.
+ https://github.com/D-32/SegmentedProgressBar/blob/master/SegmentedProgressBar/SegmentedProgressBar.swift
+ 
+ Below comments are owned by the author Dylan Marriott.
+ */
 class SegmentedProgressBar: UIView {
     
     weak var delegate: SegmentedProgressBarDelegate?

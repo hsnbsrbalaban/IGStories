@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ Data model. Contains the story array.
+ */
 class IGData: Codable {
     
     var data: [IGStory]

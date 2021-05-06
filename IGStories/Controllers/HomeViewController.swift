@@ -60,6 +60,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
+    /**
+     Creates the `StoryPreviewViewController` and presents it with the selected item index.
+     */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = StoryPreviewViewController.init()
         vc.selectedIndex = indexPath.row

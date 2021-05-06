@@ -25,9 +25,21 @@ class StoryPreviewCell: UICollectionViewCell {
     
     //MARK: - Variables
     private var storyIndex: Int = -1
+    /**
+     Index of the last seen snap. Get this from `StoryManager`.
+     */
     private var lastSeenSnapIndex: Int = 0
+    /**
+     The last seen snap index shoul be checked only once. This flag will be set to false after the first check.
+     */
     private var shouldCheckLastSeenIndex: Bool = true
+    /**
+     Get the snaps array in configure function from `StoryManager`
+     */
     private var snaps: [IGSnap] = []
+    /**
+     The index of the currently displayed snap
+     */
     private var currentSnapIndex: Int = 0
     
     private var collectionView: UICollectionView? = nil
@@ -53,7 +65,9 @@ class StoryPreviewCell: UICollectionViewCell {
         messageTextField.layer.borderWidth = 1
         messageTextField.layer.cornerRadius = 15
     }
-    
+    /**
+     Clear every stored property to its default value.
+     */
     override func prepareForReuse() {
         super.prepareForReuse()
         storyIndex = -1
@@ -85,6 +99,12 @@ class StoryPreviewCell: UICollectionViewCell {
     }
     
     //MARK: - Functions
+    /**
+     Configure the cell with the given story index.
+     - Parameters:
+        - storyIndex: The index of the cells story.
+        - delegate: Cell's delegate.
+     */
     func configure(storyIndex: Int, delegate: StoryPreviewCellDelegate) {
         self.storyIndex = storyIndex
         self.delegate = delegate
@@ -100,7 +120,9 @@ class StoryPreviewCell: UICollectionViewCell {
         setupProgressBars()
         setupCollectionView()
     }
-    
+    /**
+     Creates  `mainView` and `progressView` objects and adds them to cell.
+     */
     private func setupViews() {
         mainView = UIView(frame: .zero)
         guard let mv = mainView else { return }
@@ -130,19 +152,21 @@ class StoryPreviewCell: UICollectionViewCell {
         contentView.bringSubviewToFront(userView)
         layoutIfNeeded()
     }
-    
+    /**
+     Creates the `collectionView` and adds it to `mainView`.
+     */
     private func setupCollectionView() {
         guard let mv = mainView else {
             fatalError("main view is not created!")
         }
-
+        // Create the collection view layout
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: mv.bounds.width,
                                  height: mv.bounds.height)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
-        
+        // Create the colelction view
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.showsHorizontalScrollIndicator = false
@@ -150,11 +174,11 @@ class StoryPreviewCell: UICollectionViewCell {
         collectionView?.isPagingEnabled = true
         collectionView?.isScrollEnabled = false
         collectionView?.backgroundColor = .clear
-        
+        // Set the collection view's delegates and register `SnapPreviewCell`
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.register(SnapPreviewCell.self, forCellWithReuseIdentifier: SnapPreviewCell.identifier)
-        
+        // Add collection view to mainView
         guard let collectionView = collectionView else { return }
         mv.addSubview(collectionView)
         NSLayoutConstraint.activate([
@@ -165,7 +189,10 @@ class StoryPreviewCell: UICollectionViewCell {
         ])
         layoutIfNeeded()
     }
-    
+    /**
+     Creates progress bars and adds them to `progressView`.
+     Creates a progress bar for each snap in the story.
+     */
     private func setupProgressBars() {
         guard let pv = progressView else {
             fatalError("progress view is not created!")
@@ -193,13 +220,17 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return snaps.count
     }
-    
+    /**
+     - NOTE: The configure function of the collection view cells are called in `willDisplay` function. Not in `cellForItemAt`.
+     */
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SnapPreviewCell.identifier, for: indexPath) as! SnapPreviewCell
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Check for the last seen snap index and scroll to that position.
+        // This check is done only once (only in the first appearing).
         if lastSeenSnapIndex != 0 && shouldCheckLastSeenIndex {
             shouldCheckLastSeenIndex = false
             collectionView.scrollToItem(at: IndexPath(item: lastSeenSnapIndex, section: 0), at: .centeredHorizontally, animated: false)
@@ -211,7 +242,7 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
                 return
             }
         }
-        
+        // Clear the cell's content and re-configure it.
         cell.prepareForReuse()
         if let cell = cell as? SnapPreviewCell {
             cell.configure(storyIndex: storyIndex, snapIndex: indexPath.row, delegate: self)
@@ -221,6 +252,12 @@ extension StoryPreviewCell: UICollectionViewDelegate, UICollectionViewDataSource
 
 //MARK: - SnapPreviewCellDelegate
 extension StoryPreviewCell: SnapPreviewCellDelegate {
+    /**
+     Checks the given direction index. Scrolls the collection view forward or backward according to parameters. Asks its delegate to move if there are no snaps left.
+     - Parameters:
+        - direction: Movement direction. (.forward or .backward)
+        - index: Snap index
+     */
     func move(_ direction: MovementDirection, _ index: Int) {
         switch direction {
         case .forward:
@@ -244,7 +281,10 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             }
         }
     }
-    
+    /**
+     Directly asks its delegate to move to the next or previous story. Called during swipe gesture.
+     - Parameter direction: The movement direction (.forward or .backward)
+     */
     func moveToStory(_ direction: MovementDirection) {
         switch direction {
         case .forward:
@@ -253,13 +293,21 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             delegate?.move(.backward, storyIndex)
         }
     }
-    
+    /**
+     Gets notified by the snap cell that the current cell displayed its image. Starts the animation for the related progress bar.
+     - Parameter snapIndex: The index of the snap cell.
+     */
     func didDisplayImage(_ snapIndex: Int) {
         currentSnapIndex = snapIndex
         segmentedProgressBars[snapIndex].delegate = self
         segmentedProgressBars[snapIndex].startAnimation()
     }
-    
+    /**
+     Gets notified by the snap cell that the current cell displayed and started its video. Starts the animation for the related progress bar.
+     - Parameters:
+        - snapIndex: The index of the snap cell.
+        - duration: Duration of the video.
+     */
     func didDisplayVideo(_ snapIndex: Int, with duration: CMTime?) {
         currentSnapIndex = snapIndex
         if let duration = duration {
@@ -269,22 +317,37 @@ extension StoryPreviewCell: SnapPreviewCellDelegate {
             segmentedProgressBars[snapIndex].startAnimation()
         }
     }
-    
+    /**
+     Stops the animation of the related progress bar for the given index.
+     - Parameter snapIndex: Index of the snap cell.
+     */
     func pauseProgress(for snapIndex: Int) {
         segmentedProgressBars[snapIndex].isPaused = true
     }
-    
+    /**
+     Continues the animation of the related progress bar for the given index.
+     - Parameter snapIndex: Index of the snap cell.
+     */
     func resumeProgress(for snapIndex: Int) {
         segmentedProgressBars[snapIndex].isPaused = false
     }
-    
+    /**
+     Resets the animation of the related progress bar for the given index.
+     - Parameter snapIndex: Index of the snap cell.
+     */
     func resetProgress(for snapIndex: Int) {
         segmentedProgressBars[snapIndex].rewind()
         segmentedProgressBars[snapIndex].isPaused = true
     }
 }
-
+// MARK: - SegmentedProgressBarDelegate
 extension StoryPreviewCell: SegmentedProgressBarDelegate {
+    /**
+     Gets notified when the current progress bar's animation ended. Removes the bar's delegate and calls `move` function.
+     - Parameters:
+        - index: Index of the progress bar.
+        - bar: The progress bar itself.
+     */
     func segmentedProgressBarFinished(index: Int, bar: SegmentedProgressBar) {
         if index == currentSnapIndex {
             bar.removeDelegate()

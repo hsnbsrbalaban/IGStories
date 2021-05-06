@@ -26,7 +26,7 @@
                 },
                 {
                     "media_type": "video",
-                    "media_url": "https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1280_10MG.mp4"
+                    "media_url": "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
                 }
             ]
         },
@@ -101,120 +101,12 @@
             "snap_count": 2,
             "snaps": [
                 {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/13/400/400"
+                    "media_type": "video",
+                    "media_url": "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
                 },
                 {
                     "media_type": "image",
                     "media_url": "https://picsum.photos/id/14/400/400"
-                }
-            ]
-        },
-        {
-            "id": "5",
-            "user": {
-                "username": "deneme5",
-                "profile_picture": "https://picsum.photos/id/15/400/400"
-            },
-            "snap_count": 2,
-            "snaps": [
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/16/400/400"
-                },
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/17/400/400"
-                }
-            ]
-        },
-        {
-            "id": "6",
-            "user": {
-                "username": "deneme6",
-                "profile_picture": "https://picsum.photos/id/18/400/400"
-            },
-            "snap_count": 2,
-            "snaps": [
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/19/400/400"
-                },
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/20/400/400"
-                }
-            ]
-        },
-        {
-            "id": "7",
-            "user": {
-                "username": "deneme7",
-                "profile_picture": "https://picsum.photos/id/26/400/400"
-            },
-            "snap_count": 2,
-            "snaps": [
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/27/400/400"
-                },
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/28/400/400"
-                }
-            ]
-        },
-        {
-            "id": "8",
-            "user": {
-                "username": "deneme8",
-                "profile_picture": "https://picsum.photos/id/29/400/400"
-            },
-            "snap_count": 2,
-            "snaps": [
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/30/400/400"
-                },
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/31/400/400"
-                }
-            ]
-        },
-        {
-            "id": "9",
-            "user": {
-                "username": "deneme9",
-                "profile_picture": "https://picsum.photos/id/32/400/400"
-            },
-            "snap_count": 2,
-            "snaps": [
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/33/400/400"
-                },
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/34/400/400"
-                }
-            ]
-        },
-        {
-            "id": "10",
-            "user": {
-                "username": "deneme10",
-                "profile_picture": "https://picsum.photos/id/35/400/400"
-            },
-            "snap_count": 2,
-            "snaps": [
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/36/400/400"
-                },
-                {
-                    "media_type": "image",
-                    "media_url": "https://picsum.photos/id/37/400/400"
                 }
             ]
         }
