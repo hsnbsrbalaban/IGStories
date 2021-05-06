@@ -102,19 +102,6 @@ class SnapPreviewCell: UICollectionViewCell {
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
         leftSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
         rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
-            guard let self = self,
-                  let tapGR = self.tapGesture,
-                  let longPressGR = self.longPressGesture,
-                  let lsGR = self.leftSwipeGesture,
-                  let rsGR = self.rightSwipeGesture else { return }
-            lsGR.direction = .left
-            rsGR.direction = .right
-            self.addGestureRecognizer(tapGR)
-            self.addGestureRecognizer(longPressGR)
-            self.addGestureRecognizer(lsGR)
-            self.addGestureRecognizer(rsGR)
-        }
         
         StoryManager.shared.updateLastSeenSnapIndex(storyIndex: storyIndex, snapIndex: snapIndex + 1)
     }
@@ -128,6 +115,7 @@ class SnapPreviewCell: UICollectionViewCell {
         imageView?.loadImageFromUrl(urlString: urlString, completion: { [weak self] result in
             guard let self = self else { return }
             if result {
+                self.addGestures()
                 self.delegate?.didDisplayImage(self.snapIndex)
             }
         })
@@ -202,11 +190,25 @@ extension SnapPreviewCell {
             delegate?.moveToStory(.backward)
         }
     }
+    
+    private func addGestures() {
+        guard let tapGR = self.tapGesture,
+              let longPressGR = self.longPressGesture,
+              let lsGR = self.leftSwipeGesture,
+              let rsGR = self.rightSwipeGesture else { return }
+        lsGR.direction = .left
+        rsGR.direction = .right
+        self.addGestureRecognizer(tapGR)
+        self.addGestureRecognizer(longPressGR)
+        self.addGestureRecognizer(lsGR)
+        self.addGestureRecognizer(rsGR)
+    }
 }
 
 //MARK: - VideoPlayerViewDelegate & Video Functions
 extension SnapPreviewCell: VideoPlayerViewDelegate {
     func videoDidStart(with duration: CMTime?) {
+        addGestures()
         delegate?.didDisplayVideo(snapIndex, with: duration)
     }
 }
